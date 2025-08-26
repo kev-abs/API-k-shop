@@ -1,0 +1,28 @@
+cliente
+{
+  "nombre": "Kevin Mendez",
+  "correo": "kevin@hotmail.com",
+  "contrasena": "12345",
+  "fecha_Registro": "2025-08-25",
+  "estado": "Activo",
+  "documento": 123456789,
+  "telefono": 1001234567
+}
+producto
+{
+  "nombre": "Laptop HP",
+  "descripcion": "Laptop 15 pulgadas",
+  "precio": 2500.99,
+  "stock": 10,
+  "id_Proveedor": 2,
+  "estado": "Activo"
+}
+empleado
+{
+  "nombre": "Carlos Perez",
+  "cargo": "Administrador",
+  "correo": "carlos@empresa.com",
+  "contrasena": "nueva123"
+}
+
+
