@@ -1,6 +1,5 @@
-package com.example.demo.men1.empleado;
+package com.example.demo.java1.empleado;
 
-import com.example.demo.men1.producto.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

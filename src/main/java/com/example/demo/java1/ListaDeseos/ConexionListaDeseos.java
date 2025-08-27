@@ -1,4 +1,4 @@
-package com.example.demo.men1.ListaDeseos;
+package com.example.demo.java1.ListaDeseos;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

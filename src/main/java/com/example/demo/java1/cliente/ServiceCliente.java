@@ -1,4 +1,4 @@
-package com.example.demo.men1.cliente;
+package com.example.demo.java1.cliente;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

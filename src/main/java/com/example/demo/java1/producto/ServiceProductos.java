@@ -1,4 +1,4 @@
-package com.example.demo.men1.producto;
+package com.example.demo.java1.producto;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
