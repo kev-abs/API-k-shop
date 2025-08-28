@@ -21,12 +21,15 @@ target/
 
 <<<<<<< HEAD
 =======
+<<<<<<< HEAD
+=======
 # Ignorar pom.xml y application.properties
 pom.xml
 src/main/resources/application.properties
 
 
 >>>>>>> c37fba736de8c3225cf4dddb6c7c1f7038c3ceee
+>>>>>>> eccf65ff27f31664e68958a359aead50490423b5
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
