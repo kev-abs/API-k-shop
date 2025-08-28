@@ -6,7 +6,7 @@ public class ListaDeseos {
 
     private int idLista;
     private int idCliente;
-    private LocalDate fechaCreacion; // ✅ camelCase en vez de fecha_creacion
+    private LocalDate fechaCreacion;
 
     public int getIdLista() {
         return idLista;
