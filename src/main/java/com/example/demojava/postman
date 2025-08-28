@@ -25,4 +25,14 @@ empleado
   "contrasena": "nueva123"
 }
 
+envio
+{
+  "ID_Pedido": 101,
+  "direccionEnvio": "Calle 123 #45-67, Bogotá",
+  "fechaEnvio": "2025-08-29",
+  "metodoEnvio": "Punto de retiro",
+  "estadoEnvio": "Enviado"
+}
+
+
 
