@@ -1,4 +1,4 @@
-package com.example.demojava.IngresoCompra;
+package com.example.demo.java1.IngresoCompra;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
