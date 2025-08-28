@@ -46,3 +46,20 @@ JSON envio
    "total": "200000.00"
  }
 
+JSON resenas
+{
+    "idResena": 1,
+  "idCliente": 7,
+  "idProducto": 10,
+  "calificacion": 5,
+  "comentario": "Excelente producto, llegó rápido",
+  "fecha": "2025-08-28"
+}
+
+JSON lista_deseos
+{
+  "idCliente": 1,
+  "fechaCreacion": "2025-08-28"
+}
+
+

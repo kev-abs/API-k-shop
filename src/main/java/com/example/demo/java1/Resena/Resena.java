@@ -1,8 +1,8 @@
-package com.example.demo.java1.Reseña;
+package com.example.demo.java1.Resena;
 
 import java.time.LocalDate;
 
-public class Reseña {
+public class Resena {
     private int idResena;
     private int idCliente;
     private int idProducto;
