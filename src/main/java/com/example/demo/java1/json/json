@@ -1,0 +1,41 @@
+Json productos
+{
+  "nombre": "Camiseta Oversize Negra",
+  "descripcion": "Camiseta en algodón 100%, corte oversize",
+  "precio": 59990.0,
+  "stock": 50,
+  "idProveedor": 2,
+  "imagen": "camiseta_negra.jpg",
+  "estado": "Activo
+  }
+
+Json empleado
+{
+  "nombre": "Kevin Mendez",
+  "cargo": "Vendedor",
+  "correo": "kevin@example.com",
+  "contrasena": "12345",
+  "fechaContratacion": "2025-08-26",
+  "estado": "Activo"
+}
+
+Json Clientes
+{
+  "nombre": "Manuel Rivera",
+  "correo": "manuel@example.com",
+  "contrasena": "123456",
+  "fechaRegistro": "2025-08-26",
+  "estado": "Activo",
+  "documento": "123456789",
+  "telefono": "3001234567"
+}
+
+JSON envio
+{
+  "ID_Pedido": 101,
+  "direccionEnvio": "Calle 123 #45-67, Bogotá",
+  "fechaEnvio": "2025-08-29",
+  "metodoEnvio": "Punto de retiro",
+  "estadoEnvio": "Enviado"
+}
+
