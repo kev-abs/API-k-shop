@@ -1,4 +1,4 @@
-package IngresoCompra;
+package com.example.demojava.IngresoCompra;
 
 import java.time.LocalDate;
 

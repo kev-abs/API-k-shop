@@ -1,4 +1,4 @@
-package IngresoCompra;
+package com.example.demojava.IngresoCompra;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
