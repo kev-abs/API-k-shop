@@ -19,6 +19,14 @@ target/
 *.iml
 *.ipr
 
+<<<<<<< HEAD
+=======
+# Ignorar pom.xml y application.properties
+pom.xml
+src/main/resources/application.properties
+
+
+>>>>>>> c37fba736de8c3225cf4dddb6c7c1f7038c3ceee
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
