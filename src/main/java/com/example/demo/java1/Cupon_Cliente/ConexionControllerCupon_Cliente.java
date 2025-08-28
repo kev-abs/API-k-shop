@@ -1,0 +1,27 @@
+package com.example.demo.java1.Cupon_Cliente;
+
+import com.example.demo.java1.Cupon.ConexionServiceCupon;
+import com.example.demo.java1.Cupon.Cupon;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+public class ConexionControllerCupon_Cliente {
+    @Autowired
+    private ConexionServiceCupon_Cliente conexionServiceCupon_cliente;
+
+    @GetMapping("/cupon_cliente")
+    public List<String> obtenerCupon_Cliente() {
+        return conexionServiceCupon_cliente.obtenerCupon_Cliente();
+    }
+
+    @PostMapping("/cupon_cliente")
+    public String agregarCupon_Cliente(@RequestBody Cupon_Cliente cupon_cliente) {
+        conexionServiceCupon_cliente.agregarCupon_Cliente(cupon_cliente);
+        return "Cupon agregado";
+    }
+
+}
