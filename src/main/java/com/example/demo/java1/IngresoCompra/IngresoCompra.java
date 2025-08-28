@@ -6,7 +6,7 @@ public class IngresoCompra {
     private int ID_Ingreso;
     private int ID_Empleado;
     private int ID_Proveedor;
-    private LocalDate Fecha_Ingreso;
+    private String Fecha_Ingreso;
     private String Total;
 
     public int getID_Ingreso_Compra() {
@@ -33,11 +33,11 @@ public class IngresoCompra {
         this.ID_Proveedor = ID_Proveedor;
     }
 
-    public LocalDate getFecha_Ingreso() {
+    public String getFecha_Ingreso() {
         return Fecha_Ingreso;
     }
 
-    public void setFecha_Ingreso(LocalDate fecha_Ingreso) {
+    public void setFecha_Ingreso(String fecha_Ingreso) {
         Fecha_Ingreso = fecha_Ingreso;
     }
 

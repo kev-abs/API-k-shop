@@ -38,4 +38,11 @@ JSON envio
   "metodoEnvio": "Punto de retiro",
   "estadoEnvio": "Enviado"
 }
+ JSON ingreso compra
+ {
+   "idEmpleado": 1,
+   "idProveedor": 4,
+   "fechaIngreso": "2025-09-01",
+   "total": "200000.00"
+ }
 
