@@ -12,7 +12,7 @@ public class ControllerEmpleado {
     private ServiceEmpleado conexionService;
 
     // Listar empleados
-    @GetMapping("/usuarios")
+    @GetMapping("/empleados")
     public List<String> listarEmpleados() {
         return conexionService.obtenerEmpleados();
     }
