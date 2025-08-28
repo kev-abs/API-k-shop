@@ -1,10 +1,16 @@
 package com.example.demo.java1.Cupon_Cliente;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.LocalDate;
 
 public class Cupon_Cliente {
+    @JsonProperty("ID_Cliente")
     private int ID_Cliente;
+
+    @JsonProperty("ID_Cupon")
     private int ID_Cupon;
+
     private boolean Usado;
 
     public int getID_Cliente() {

@@ -14,4 +14,8 @@ cupon
   "fecha_Expiracion": "2025-08-29"
 }
 
-
+cupon_cliente
+{
+  "ID_Cliente": 1,
+  "ID_Cupon": 1
+}

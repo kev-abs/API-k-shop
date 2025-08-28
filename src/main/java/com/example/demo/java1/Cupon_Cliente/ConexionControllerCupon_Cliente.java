@@ -19,9 +19,12 @@ public class ConexionControllerCupon_Cliente {
     }
 
     @PostMapping("/cupon_cliente")
-    public String agregarCupon_Cliente(@RequestBody Cupon_Cliente cupon_cliente) {
-        conexionServiceCupon_cliente.agregarCupon_Cliente(cupon_cliente);
-        return "Cupon agregado";
+    public ResponseEntity<String> agregarCupon_Cliente(@RequestBody Cupon_Cliente cupon_cliente) {
+        String resultado = conexionServiceCupon_cliente.agregarCupon_Cliente(cupon_cliente);
+        if (resultado.startsWith("Error")) {
+            return ResponseEntity.badRequest().body(resultado);
+        }
+        return ResponseEntity.ok(resultado);
     }
 
 }
