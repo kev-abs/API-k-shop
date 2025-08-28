@@ -1,4 +1,4 @@
-package com.example.demo.java1;
+package com.example.demo.java1.Proveedor;
 
 public class Proveedor {
     private int ID_Proveedor;

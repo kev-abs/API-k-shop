@@ -1,4 +1,4 @@
-package com.example.demo.java1;
+package com.example.demo.java1.Cupon;
 
 import java.time.LocalDate;
 
