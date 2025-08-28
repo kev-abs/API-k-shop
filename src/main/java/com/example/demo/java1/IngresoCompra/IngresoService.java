@@ -40,7 +40,7 @@ public class IngresoService {
     }
 
     public boolean eliminarIngreso(int id) {
-        String sql = "DELETE FROM ingreso WHERE ID_Ingreso = ?";
+        String sql = "DELETE FROM ingreso_compra WHERE ID_Ingreso = ?";
         int rows = jdbcTemplate.update(sql, id);
         return rows > 0;
     }
