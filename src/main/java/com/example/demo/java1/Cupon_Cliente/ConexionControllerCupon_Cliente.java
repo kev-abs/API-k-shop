@@ -25,7 +25,6 @@ public class ConexionControllerCupon_Cliente {
         }
         return ResponseEntity.ok(resultado);
     }
-
     @PutMapping("/cupon_cliente/{idCliente}/{idCupon}")
     public ResponseEntity<String> actualizarCupon_Cliente(
             @PathVariable int idCliente,
@@ -39,5 +38,4 @@ public class ConexionControllerCupon_Cliente {
         }
         return ResponseEntity.ok(resultado);
     }
-
 }
