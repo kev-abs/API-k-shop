@@ -40,5 +40,4 @@ public class ConexionControllerCupon_Cliente {
         return ResponseEntity.ok(resultado);
     }
 
-
 }
