@@ -61,5 +61,11 @@ JSON lista_deseos
   "idCliente": 1,
   "fechaCreacion": "2025-08-28"
 }
-
+JSON Detalle pedido
+{
+  "idPedido": 1,
+  "idProducto": 10,
+  "cantidad": 3,
+  "precioUnitario": 25000
+}
 
