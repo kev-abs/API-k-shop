@@ -42,10 +42,10 @@ public class IngresoService {
             return false;
         }
 
-        // Ejecutar actualización solo si las claves foráneas existen
+        
         String sql = "UPDATE ingreso_compra " +
                 "SET ID_Empleado = ?, ID_Proveedor = ?, Fecha_Ingreso = ?, Total = ? " +
-                "WHERE ID_ingreso = ?";
+                "WHERE ID_Ingreso = ?";
 
         int rows = jdbcTemplate.update(sql,
                 ingresoCompra.getID_Empleado(),
