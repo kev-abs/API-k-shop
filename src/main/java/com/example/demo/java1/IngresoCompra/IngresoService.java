@@ -26,9 +26,27 @@ public class IngresoService {
     }
 
     public boolean actualizarIngreso(int id, IngresoCompra ingresoCompra) {
+        // Validar existencia de ID_Empleado
+        String checkEmpleado = "SELECT COUNT(*) FROM empleado WHERE ID_Empleado = ?";
+        Integer empleadoCount = jdbcTemplate.queryForObject(checkEmpleado, Integer.class, ingresoCompra.getID_Empleado());
+        if (empleadoCount == null || empleadoCount == 0) {
+            System.out.println("Error: El empleado con ID " + ingresoCompra.getID_Empleado() + " no existe.");
+            return false;
+        }
+
+        // Validar existencia de ID_Proveedor
+        String checkProveedor = "SELECT COUNT(*) FROM proveedor WHERE ID_Proveedor = ?";
+        Integer proveedorCount = jdbcTemplate.queryForObject(checkProveedor, Integer.class, ingresoCompra.getID_Proveedor());
+        if (proveedorCount == null || proveedorCount == 0) {
+            System.out.println("Error: El proveedor con ID " + ingresoCompra.getID_Proveedor() + " no existe.");
+            return false;
+        }
+
+        // Ejecutar actualización solo si las claves foráneas existen
         String sql = "UPDATE ingreso_compra " +
                 "SET ID_Empleado = ?, ID_Proveedor = ?, Fecha_Ingreso = ?, Total = ? " +
                 "WHERE ID_ingreso = ?";
+
         int rows = jdbcTemplate.update(sql,
                 ingresoCompra.getID_Empleado(),
                 ingresoCompra.getID_Proveedor(),
@@ -36,6 +54,7 @@ public class IngresoService {
                 ingresoCompra.getTotal(),
                 id
         );
+
         return rows > 0;
     }
 
