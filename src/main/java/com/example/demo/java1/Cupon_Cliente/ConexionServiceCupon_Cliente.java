@@ -49,4 +49,35 @@ public class ConexionServiceCupon_Cliente {
         return "Cupon agregado correctamente.";
     }
 
+    public String actualizarCupon_Cliente(int idClienteAntiguo, int idCuponAntiguo, Cupon_Cliente cupon_cliente) {
+
+        String checkCliente = "SELECT COUNT(*) FROM cliente WHERE ID_Cliente = ?";
+        Integer clienteCount = jdbcTemplate.queryForObject(checkCliente, Integer.class, cupon_cliente.getID_Cliente());
+        if (clienteCount == null || clienteCount == 0) {
+            return "Error: El cliente con ID " + cupon_cliente.getID_Cliente() + " no existe.";
+        }
+
+
+        String checkCupon = "SELECT COUNT(*) FROM cupon WHERE ID_Cupon = ?";
+        Integer cuponCount = jdbcTemplate.queryForObject(checkCupon, Integer.class, cupon_cliente.getID_Cupon());
+        if (cuponCount == null || cuponCount == 0) {
+            return "Error: El cupón con ID " + cupon_cliente.getID_Cupon() + " no existe.";
+        }
+
+        String sql = "UPDATE cupon_cliente SET ID_Cliente = ?, ID_Cupon = ?, Usado = ? " +
+                "WHERE ID_Cliente = ? AND ID_Cupon = ?";
+        int filasAfectadas = jdbcTemplate.update(sql,
+                cupon_cliente.getID_Cliente(),
+                cupon_cliente.getID_Cupon(),
+                cupon_cliente.getUsado(),
+                idClienteAntiguo,
+                idCuponAntiguo
+        );
+
+        if (filasAfectadas > 0) {
+            return "Cupon_Cliente actualizado correctamente.";
+        } else {
+            return "Error: No se encontró el registro a actualizar.";
+        }
+    }
 }

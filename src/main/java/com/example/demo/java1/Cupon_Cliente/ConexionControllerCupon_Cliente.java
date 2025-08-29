@@ -27,5 +27,17 @@ public class ConexionControllerCupon_Cliente {
         return ResponseEntity.ok(resultado);
     }
 
+    @PutMapping("/cupon_cliente/{idCliente}/{idCupon}")
+    public ResponseEntity<String> actualizarCupon_Cliente(
+            @PathVariable int idCliente,
+            @PathVariable int idCupon,
+            @RequestBody Cupon_Cliente cupon_cliente) {
 
+        String resultado = conexionServiceCupon_cliente.actualizarCupon_Cliente(idCliente, idCupon, cupon_cliente);
+
+        if (resultado.startsWith("Error")) {
+            return ResponseEntity.badRequest().body(resultado);
+        }
+        return ResponseEntity.ok(resultado);
+    }
 }
