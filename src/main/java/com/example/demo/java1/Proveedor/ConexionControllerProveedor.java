@@ -1,4 +1,4 @@
-package com.example.demo.java1.Proveedor;
+package com.example.demo.java1.proveedor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
