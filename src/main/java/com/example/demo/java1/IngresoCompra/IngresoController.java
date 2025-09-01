@@ -18,15 +18,20 @@ public class IngresoController {
 
     @PostMapping("/ingresocompra")
     public String agregarIngreso(@RequestBody IngresoCompra ingresoCompra) {
-        ingresoService.obtenerIngreso();
-        return "Ingreso agregado";
+        boolean insertado = ingresoService.agregarIngreso(ingresoCompra);
+        if (insertado) {
+            return "Ingreso agregado correctamente";
+        } else {
+            return "Error: No se pudo agregar el ingreso. Verifica los IDs de empleado y proveedor.";
+        }
     }
 
     @PutMapping("/ingresocompra/{id}")
     public ResponseEntity<String> actualizarIngreso(@PathVariable int id,
                                                     @RequestBody IngresoCompra ingresoCompra) {
         boolean ok = ingresoService.actualizarIngreso(id, ingresoCompra);
-        return ok ? ResponseEntity.ok("Ingreso actualizado correctamente")
+        return ok
+                ? ResponseEntity.ok("Ingreso actualizado correctamente")
                 : ResponseEntity.notFound().build();
     }
 
@@ -37,6 +42,8 @@ public class IngresoController {
                 : ResponseEntity.notFound().build();
     }
 }
+
+
 
 
 
