@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/lista_deseos") //      prefijo común para todas las rutas
+@RequestMapping("/lista_deseos") //
 public class ControllerListaDeseos {
     private final ConexionListaDeseos conexionService;
 
@@ -12,13 +12,13 @@ public class ControllerListaDeseos {
         this.conexionService = conexionService;
     }
 
-    // GET - Listar todas
+
     @GetMapping
     public List<ListaDeseos> listarListasDeseos() {
         return conexionService.obtenerListasDeseos();
     }
 
-    // POST - Crear nueva lista
+
     @PostMapping
     public String agregarListaDeseos(@RequestBody ListaDeseos listadeseos) {
         int filas = conexionService.insertarListaDeseos(
@@ -29,7 +29,7 @@ public class ControllerListaDeseos {
                 : "No se pudo crear la lista de deseos";
     }
 
-    // PUT - Actualizar por ID
+
     @PutMapping("/{id}")
     public String actualizarListaDeseos(@PathVariable int id, @RequestBody ListaDeseos listadeseos) {
         int filas = conexionService.actualizarListaDeseos(
