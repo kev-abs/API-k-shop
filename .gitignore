@@ -19,7 +19,6 @@ target/
 *.iml
 *.ipr
 
-# Ignorar pom.xml y application.properties
 pom.xml
 src/main/resources/application.properties
 
