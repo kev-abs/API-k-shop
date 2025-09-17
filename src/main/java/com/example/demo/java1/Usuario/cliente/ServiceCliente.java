@@ -36,11 +36,10 @@ public class ServiceCliente {
 
     // Insertar cliente (POST)
     public int insertarCliente(String nombre, String correo, String contrasena,
-                               LocalDate fechaRegistro, String estado,
                                String documento, String telefono) {
-        String sql = "INSERT INTO cliente (Nombre, Correo, Contrasena, Fecha_Registro, Estado, Documento, Telefono) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, nombre, correo, contrasena, fechaRegistro, estado, documento, telefono);
+        String sql = "INSERT INTO cliente (Nombre, Correo, Contrasena, Documento, Telefono) " +
+                "VALUES (?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, nombre, correo, contrasena, documento, telefono);
     }
 
     // Actualizar cliente (PUT)

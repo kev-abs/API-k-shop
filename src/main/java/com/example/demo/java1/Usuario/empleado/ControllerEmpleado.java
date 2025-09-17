@@ -27,9 +27,7 @@ public class ControllerEmpleado {
                 empleado.getNombre(),
                 empleado.getCargo(),
                 empleado.getCorreo(),
-                empleado.getContrasena(),
-                empleado.getFechaContratacion(),
-                empleado.getEstado()
+                empleado.getContrasena()
         );
 
         return (filas > 0) ? "Empleado agregado correctamente" : "Error al agregar empleado";

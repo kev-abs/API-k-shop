@@ -34,16 +34,15 @@ public class ServiceEmpleado {
         });
     }
     // Post empleados
-    public int insertarEmpleado(String nombre, String cargo, String correo, String contrasena, String fechaContratacion,
-                                String estado) {
-        String sql = "INSERT INTO empleado (Nombre, Cargo, Correo, Contrasena, Fecha_Contratacion, Estado) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena, fechaContratacion, estado);
+    public int insertarEmpleado(String nombre, String cargo, String correo, String contrasena) {
+        String sql = "INSERT INTO empleado (Nombre, Cargo, Correo, Contrasena) " +
+                "VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena);
     }
     // Put
     public int actualizarEmpleado(int id, String nombre, String cargo, String correo, String contrasena, String fechaContratacion,
                                   String estado) {
-        String sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Contrasena=?, Fecha_Contratacion=?, Estado=? WHERE ID_Empleado=?";
+        String sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Contrasena=?, Estado=? WHERE ID_Empleado=?";
         return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena, fechaContratacion, estado, id);
     }
     // Delete
