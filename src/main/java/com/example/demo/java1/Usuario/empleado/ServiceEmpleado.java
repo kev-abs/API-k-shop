@@ -43,7 +43,7 @@ public class ServiceEmpleado {
     public int actualizarEmpleado(int id, String nombre, String cargo, String correo, String contrasena, String fechaContratacion,
                                   String estado) {
         String sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Contrasena=?, Estado=? WHERE ID_Empleado=?";
-        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena, fechaContratacion, estado, id);
+        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena, estado, id);
     }
     // Delete
     public int eliminarEmpleado(int id) {
