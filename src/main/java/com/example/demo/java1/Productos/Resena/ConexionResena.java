@@ -22,19 +22,17 @@ public class ConexionResena {
         return jdbcTemplate.update(sql, idCliente, idProducto, calificacion, comentario, fecha);
     }
 
-    public List<Resena> obtenerResenas() {
+    public List<String> obtenerResenas() {
         String sql = "SELECT * FROM resena";
-        return jdbcTemplate.query(sql, new RowMapper<Resena>() {
+        return jdbcTemplate.query(sql, new RowMapper<String>() {
             @Override
-            public Resena mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Resena resena = new Resena();
-                resena.setIdResena(rs.getInt("ID_Resena"));
-                resena.setIdCliente(rs.getInt("ID_Cliente"));
-                resena.setIdProducto(rs.getInt("ID_Producto"));
-                resena.setCalificacion(rs.getInt("Calificacion"));
-                resena.setComentario(rs.getString("Comentario"));
-                resena.setFecha(rs.getDate("Fecha").toLocalDate());
-                return resena;
+            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return rs.getInt("ID_Resena") + " | " +
+                        rs.getInt("ID_Cliente") + " | " +
+                        rs.getInt("ID_Producto") + " | " +
+                        rs.getInt("Calificacion") + " | " +
+                        rs.getString("Comentario") + " | " +
+                        rs.getDate("Fecha").toLocalDate();
             }
         });
     }

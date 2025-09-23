@@ -14,7 +14,7 @@ public class ControllerResena {
     }
 
     @GetMapping
-    public List<Resena> listarResenas() {
+    public List<String> listarResenas() {
         return conexionService.obtenerResenas();
     }
 

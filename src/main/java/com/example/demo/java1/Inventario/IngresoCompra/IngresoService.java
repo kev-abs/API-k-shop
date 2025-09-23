@@ -14,16 +14,21 @@ public class IngresoService {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // Obtener lista de ingresos
     public List<String> obtenerIngreso() {
         String sql = "SELECT * FROM ingreso_compra";
         return jdbcTemplate.query(sql, new RowMapper<String>() {
             @Override
             public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getString("ID_Proveedor") + "   " +
-                        rs.getString("Total");
+                return rs.getInt("ID_Ingreso") + " | " +
+                        rs.getInt("ID_Empleado") + " | " +
+                        rs.getInt("ID_Proveedor") + " | " +
+                        rs.getString("Fecha_Ingreso") + " | " +
+                        rs.getDouble("Total");
             }
         });
     }
+
     public boolean agregarIngreso(IngresoCompra ingresoCompra) {
         // Validar existencia de ID_Empleado
         String checkEmpleado = "SELECT COUNT(*) FROM empleado WHERE ID_Empleado = ?";
@@ -41,12 +46,11 @@ public class IngresoService {
             return false;
         }
 
-        String sql = "INSERT INTO ingreso_compra (ID_Empleado, ID_Proveedor, Fecha_Ingreso, Total) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO ingreso_compra (ID_Empleado, ID_Proveedor, Total) VALUES (?, ?, ?)";
 
         int rows = jdbcTemplate.update(sql,
                 ingresoCompra.getID_Empleado(),
                 ingresoCompra.getID_Proveedor(),
-                ingresoCompra.getFecha_Ingreso(),
                 ingresoCompra.getTotal()
         );
 
@@ -73,13 +77,12 @@ public class IngresoService {
 
         
         String sql = "UPDATE ingreso_compra " +
-                "SET ID_Empleado = ?, ID_Proveedor = ?, Fecha_Ingreso = ?, Total = ? " +
+                "SET ID_Empleado = ?, ID_Proveedor = ?, Total = ? " +
                 "WHERE ID_Ingreso = ?";
 
         int rows = jdbcTemplate.update(sql,
                 ingresoCompra.getID_Empleado(),
                 ingresoCompra.getID_Proveedor(),
-                ingresoCompra.getFecha_Ingreso(),
                 ingresoCompra.getTotal(),
                 id
         );
