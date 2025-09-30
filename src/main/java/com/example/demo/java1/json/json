@@ -68,4 +68,11 @@ JSON Detalle pedido
   "cantidad": 3,
   "precioUnitario": 25000
 }
+JSON Pedido
+{
+  "ID_Cliente": 3,
+  "Fecha_Pedido": "2025-09-01",
+  "Estado": "Pendiente",
+  "Total": 150000.50
+}
 

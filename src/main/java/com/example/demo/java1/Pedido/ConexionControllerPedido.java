@@ -1,55 +1,40 @@
 package com.example.demo.java1.Pedido;
 
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/pedido")
 public class ConexionControllerPedido {
 
-    private final ConexionServicePedido conexionServicePedido;
+    @Autowired
+    private ConexionServicePedido conexionService;
 
-    public ConexionControllerPedido(ConexionServicePedido conexionServicePedido) {
-        this.conexionServicePedido = conexionServicePedido;
+    // Listar pedidos
+    @GetMapping("/pedidos")
+    public List<Pedido> listarPedidos() {
+        return conexionService.obtenerPedidos();
     }
 
-    @GetMapping
-    public List<Pedido> obtenerTodos() {
-        return conexionServicePedido.obtenerPedidos();
+    // Crear pedido
+    @PostMapping("/pedidos")
+    public String crearPedido(@RequestBody Pedido pedido) {
+        int filas = conexionService.agregarPedido(pedido);
+        return (filas > 0) ? "Pedido creado correctamente" : "Error al crear el pedido";
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Pedido> obtenerPorId(@PathVariable int id) {
-        try {
-            Pedido pedido = conexionServicePedido.obtenerPedidoPorId(id);
-            return ResponseEntity.ok(pedido);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    // Actualizar pedido
+    @PutMapping("/pedidos/{id}")
+    public String actualizarPedido(@PathVariable int id, @RequestBody Pedido pedido) {
+        int filas = conexionService.actualizarPedido(id, pedido);
+        return (filas > 0) ? "Pedido actualizado correctamente" : "Pedido no encontrado";
     }
 
-    @PostMapping
-    public ResponseEntity<String> agregar(@RequestBody Pedido pedido) {
-        int filas = conexionServicePedido.agregarPedido(pedido);
-        return (filas > 0)
-                ? ResponseEntity.ok("Pedido agregado correctamente")
-                : ResponseEntity.badRequest().body("Error al agregar el pedido");
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<String> actualizar(@PathVariable int id, @RequestBody Pedido pedido) {
-        int filas = conexionServicePedido.actualizarPedido(id, pedido);
-        return (filas > 0)
-                ? ResponseEntity.ok("Pedido actualizado correctamente")
-                : ResponseEntity.notFound().build();
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> eliminar(@PathVariable int id) {
-        int filas = conexionServicePedido.eliminarPedido(id);
-        return (filas > 0)
-                ? ResponseEntity.ok("Pedido eliminado correctamente")
-                : ResponseEntity.notFound().build();
+    // Eliminar pedido
+    @DeleteMapping("/pedidos/{id}")
+    public String eliminarPedido(@PathVariable int id) {
+        int filas = conexionService.eliminarPedido(id);
+        return (filas > 0) ? "Pedido eliminado correctamente" : "Pedido no encontrado";
     }
 }

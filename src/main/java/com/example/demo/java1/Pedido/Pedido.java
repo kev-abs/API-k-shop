@@ -1,13 +1,16 @@
 package com.example.demo.java1.Pedido;
-import java.sql.Date;
+
+import java.time.LocalDate;
 
 public class Pedido {
+
     private int ID_Pedido;
     private int ID_Cliente;
-    private Date Fecha_Pedido;
+    private LocalDate Fecha_Pedido; // formato: yyyy-MM-dd
     private String Estado;
     private double Total;
 
+    // Getters y Setters
     public int getID_Pedido() {
         return ID_Pedido;
     }
@@ -24,27 +27,27 @@ public class Pedido {
         this.ID_Cliente = ID_Cliente;
     }
 
-    public Date getFecha_Pedido() {
+    public LocalDate getFecha_Pedido() {
         return Fecha_Pedido;
     }
 
-    public void setFecha_Pedido(Date Fecha_Pedido) {
-        this.Fecha_Pedido = Fecha_Pedido;
+    public void setFecha_Pedido(LocalDate fecha_Pedido) {
+        Fecha_Pedido = fecha_Pedido;
     }
 
     public String getEstado() {
         return Estado;
     }
 
-    public void setEstado(String Estado) {
-        this.Estado = Estado;
+    public void setEstado(String estado) {
+        Estado = estado;
     }
 
     public double getTotal() {
         return Total;
     }
 
-    public void setTotal(double Total) {
-        this.Total = Total;
+    public void setTotal(double total) {
+        Total = total;
     }
 }

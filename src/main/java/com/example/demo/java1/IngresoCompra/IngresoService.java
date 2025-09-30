@@ -63,7 +63,7 @@ public class IngresoService {
             return false;
         }
 
-        // Validar existencia de ID_Proveedor
+       //validacion de id de proveedor
         String checkProveedor = "SELECT COUNT(*) FROM proveedor WHERE ID_Proveedor = ?";
         Integer proveedorCount = jdbcTemplate.queryForObject(checkProveedor, Integer.class, ingresoCompra.getID_Proveedor());
         if (proveedorCount == null || proveedorCount == 0) {
@@ -71,7 +71,7 @@ public class IngresoService {
             return false;
         }
 
-        
+
         String sql = "UPDATE ingreso_compra " +
                 "SET ID_Empleado = ?, ID_Proveedor = ?, Fecha_Ingreso = ?, Total = ? " +
                 "WHERE ID_Ingreso = ?";
@@ -93,4 +93,3 @@ public class IngresoService {
         return rows > 0;
     }
 }
-

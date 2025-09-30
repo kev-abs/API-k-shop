@@ -1,6 +1,5 @@
 package com.example.demo.java1.Pedido;
 
-
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
@@ -19,11 +18,6 @@ public class ConexionServicePedido {
     public List<Pedido> obtenerPedidos() {
         String sql = "SELECT * FROM pedido";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Pedido.class));
-    }
-
-    public Pedido obtenerPedidoPorId(int id) {
-        String sql = "SELECT * FROM pedido WHERE ID_Pedido = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Pedido.class), id);
     }
 
     public int agregarPedido(Pedido pedido) {
