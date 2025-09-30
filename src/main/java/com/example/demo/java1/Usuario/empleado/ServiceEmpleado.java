@@ -17,19 +17,19 @@ public class ServiceEmpleado {
 
 
     // Obtener lista de Usuarios
-    public List<String> obtenerEmpleados() {
+    public List<EmpleadoDTO> obtenerEmpleados() {
         String sql = "SELECT * FROM Empleado";
-        return jdbcTemplate.query(sql, new RowMapper<String>() {
+        return jdbcTemplate.query(sql, new RowMapper<EmpleadoDTO>() {
             @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return
-                        rs.getInt("ID_Empleado") + " | " +
-                                rs.getString("Nombre") + " | " +
-                                rs.getString("Cargo")+" | "+
-                                rs.getString("Correo")+" | "+
-                                rs.getString("Contrasena")+" | "+
-                                rs.getString("Fecha_Contratacion")+" | "+
-                                rs.getString("Estado")+" ";
+            public EmpleadoDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+                EmpleadoDTO empleado = new EmpleadoDTO();
+                empleado.setNombre(rs.getString("Nombre"));
+                empleado.setCargo(rs.getString("Cargo"));
+                empleado.setCorreo(rs.getString("Correo"));
+                empleado.setContrasena(rs.getString("Contrasena"));
+                empleado.setFechaContratacion(rs.getString("Fecha_Contratacion"));
+                empleado.setEstado(rs.getString("Estado"));
+                return empleado;
             }
         });
     }
