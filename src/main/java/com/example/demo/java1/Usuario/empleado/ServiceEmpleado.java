@@ -1,5 +1,6 @@
 package com.example.demo.java1.Usuario.empleado;
 
+import com.example.demo.java1.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,8 +16,6 @@ public class ServiceEmpleado {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-    // Obtener lista de Usuarios
     public List<EmpleadoDTO> obtenerEmpleados() {
         String sql = "SELECT * FROM Empleado";
         return jdbcTemplate.query(sql, new RowMapper<EmpleadoDTO>() {
@@ -33,19 +32,18 @@ public class ServiceEmpleado {
             }
         });
     }
-    // Post empleados
     public int insertarEmpleado(String nombre, String cargo, String correo, String contrasena) {
+        String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
         String sql = "INSERT INTO empleado (Nombre, Cargo, Correo, Contrasena) " +
                 "VALUES (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena);
+        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasenaEncriptada);
     }
-    // Put
     public int actualizarEmpleado(int id, String nombre, String cargo, String correo, String contrasena, String fechaContratacion,
                                   String estado) {
+        String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
         String sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Contrasena=?, Estado=? WHERE ID_Empleado=?";
-        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena, estado, id);
+        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasenaEncriptada, estado, id);
     }
-    // Delete
     public int eliminarEmpleado(int id) {
         String sql = "DELETE FROM empleado WHERE ID_Empleado = ?";
         return jdbcTemplate.update(sql, id);
