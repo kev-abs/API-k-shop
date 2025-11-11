@@ -1,5 +1,6 @@
 package com.example.demo.java1.Usuario.empleado;
 
+import com.example.demo.java1.utils.PasswordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -15,38 +16,34 @@ public class ServiceEmpleado {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-
-    // Obtener lista de Usuarios
-    public List<String> obtenerEmpleados() {
+    public List<EmpleadoDTO> obtenerEmpleados() {
         String sql = "SELECT * FROM Empleado";
-        return jdbcTemplate.query(sql, new RowMapper<String>() {
+        return jdbcTemplate.query(sql, new RowMapper<EmpleadoDTO>() {
             @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return
-                        rs.getInt("ID_Empleado") + " | " +
-                                rs.getString("Nombre") + " | " +
-                                rs.getString("Cargo")+" | "+
-                                rs.getString("Correo")+" | "+
-                                rs.getString("Contrasena")+" | "+
-                                rs.getString("Fecha_Contratacion")+" | "+
-                                rs.getString("Estado")+" ";
+            public EmpleadoDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+                EmpleadoDTO empleado = new EmpleadoDTO();
+                empleado.setNombre(rs.getString("Nombre"));
+                empleado.setCargo(rs.getString("Cargo"));
+                empleado.setCorreo(rs.getString("Correo"));
+                empleado.setContrasena(rs.getString("Contrasena"));
+                empleado.setFechaContratacion(rs.getString("Fecha_Contratacion"));
+                empleado.setEstado(rs.getString("Estado"));
+                return empleado;
             }
         });
     }
-    // Post empleados
-    public int insertarEmpleado(String nombre, String cargo, String correo, String contrasena, String fechaContratacion,
-                                String estado) {
-        String sql = "INSERT INTO empleado (Nombre, Cargo, Correo, Contrasena, Fecha_Contratacion, Estado) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena, fechaContratacion, estado);
+    public int insertarEmpleado(String nombre, String cargo, String correo, String contrasena) {
+        String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
+        String sql = "INSERT INTO empleado (Nombre, Cargo, Correo, Contrasena) " +
+                "VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasenaEncriptada);
     }
-    // Put
     public int actualizarEmpleado(int id, String nombre, String cargo, String correo, String contrasena, String fechaContratacion,
                                   String estado) {
-        String sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Contrasena=?, Fecha_Contratacion=?, Estado=? WHERE ID_Empleado=?";
-        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasena, fechaContratacion, estado, id);
+        String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
+        String sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Contrasena=?, Estado=? WHERE ID_Empleado=?";
+        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasenaEncriptada, estado, id);
     }
-    // Delete
     public int eliminarEmpleado(int id) {
         String sql = "DELETE FROM empleado WHERE ID_Empleado = ?";
         return jdbcTemplate.update(sql, id);

@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class ControllerEmpleado {
 
@@ -13,7 +14,7 @@ public class ControllerEmpleado {
 
     // Listar empleados
     @GetMapping("/empleados")
-    public List<String> listarEmpleados() {
+    public List<EmpleadoDTO> listarEmpleados() {
         return conexionService.obtenerEmpleados();
     }
     // Crear empleado
@@ -27,9 +28,7 @@ public class ControllerEmpleado {
                 empleado.getNombre(),
                 empleado.getCargo(),
                 empleado.getCorreo(),
-                empleado.getContrasena(),
-                empleado.getFechaContratacion(),
-                empleado.getEstado()
+                empleado.getContrasena()
         );
 
         return (filas > 0) ? "Empleado agregado correctamente" : "Error al agregar empleado";

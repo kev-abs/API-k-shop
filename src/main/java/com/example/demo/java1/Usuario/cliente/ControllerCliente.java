@@ -28,8 +28,6 @@ public class ControllerCliente {
                 cliente.getNombre(),
                 cliente.getCorreo(),
                 cliente.getContrasena(),
-                cliente.getFechaRegistro(),
-                cliente.getEstado(),
                 cliente.getDocumento(),
                 cliente.getTelefono()
         );
