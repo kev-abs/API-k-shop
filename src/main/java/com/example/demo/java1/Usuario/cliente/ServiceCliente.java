@@ -17,22 +17,22 @@ public class ServiceCliente {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<String> obtenerClientes() {
+    public List<ClienteDTO> obtenerClientes() {
         String sql = "SELECT * FROM cliente";
-        return jdbcTemplate.query(sql, new RowMapper<String>() {
-            @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getInt("ID_Cliente") + " | " +
-                        rs.getString("Nombre") + " | " +
-                        rs.getString("Correo") + " | " +
-                        rs.getString("Contrasena") + " | " +
-                        rs.getString("Fecha_Registro") + " | " +
-                        rs.getString("Estado") + " | " +
-                        rs.getString("Documento") + " | " +
-                        rs.getString("Telefono");
-            }
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            ClienteDTO c = new ClienteDTO();
+            c.setIdCliente(rs.getInt("ID_Cliente"));
+            c.setNombre(rs.getString("Nombre"));
+            c.setCorreo(rs.getString("Correo"));
+            c.setContrasena(rs.getString("Contrasena"));
+            c.setFechaRegistro(rs.getDate("Fecha_Registro").toLocalDate());
+            c.setEstado(rs.getString("Estado"));
+            c.setDocumento(rs.getString("Documento"));
+            c.setTelefono(rs.getString("Telefono"));
+            return c;
         });
     }
+
     public int insertarCliente(String nombre, String correo, String contrasena,
                                String documento, String telefono) {
         String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
