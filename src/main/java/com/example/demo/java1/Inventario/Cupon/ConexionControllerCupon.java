@@ -12,7 +12,7 @@ public class ConexionControllerCupon {
     private ConexionServiceCupon conexionServiceCupon;
 
     @GetMapping("/cupon")
-    public List<String> obtenerCupon() {
+    public List<Cupon> obtenerCupon() {
         return conexionServiceCupon.obtenerCupon();
     }
 
