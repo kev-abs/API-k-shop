@@ -48,7 +48,7 @@ JSON envio
 
 JSON resenas
 {
-    "idResena": 1,
+  "idResena": 1,
   "idCliente": 7,
   "idProducto": 10,
   "calificacion": 5,
@@ -67,5 +67,12 @@ JSON Detalle pedido
   "idProducto": 10,
   "cantidad": 3,
   "precioUnitario": 25000
+}
+JSON
+{
+  "id_Cliente": 12,
+  "fecha_Pedido": "2025-11-12",
+  "estado": "Pendiente",
+  "total": 249000.50
 }
 
