@@ -32,7 +32,7 @@ Json Clientes
 
 JSON envio
 {
-  "ID_Pedido": 101,
+  "id_Pedido": 16,
   "direccionEnvio": "Calle 123 #45-67, Bogotá",
   "fechaEnvio": "2025-08-29",
   "metodoEnvio": "Punto de retiro",
@@ -42,6 +42,7 @@ JSON envio
  {
    "idEmpleado": 1,
    "idProveedor": 4,
+   "fechaIngreso": "2025-09-01",
    "total": "200000.00"
  }
 
