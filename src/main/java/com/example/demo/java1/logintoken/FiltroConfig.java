@@ -11,7 +11,7 @@ public class FiltroConfig {
     public FilterRegistrationBean<JwtFiltro> jwtFiltroRegistration(JwtFiltro filtro) {
         FilterRegistrationBean<JwtFiltro> registroFiltro = new FilterRegistrationBean<>();
         registroFiltro.setFilter(filtro);
-        registroFiltro.addUrlPatterns( "/clientes/*");
+        registroFiltro.addUrlPatterns(  "/puntos/*");
         registroFiltro.setOrder(1);
         return registroFiltro;
     }
