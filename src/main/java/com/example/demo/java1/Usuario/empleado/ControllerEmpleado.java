@@ -65,10 +65,12 @@ public class ControllerEmpleado {
 
     // Eliminar empleado
     @DeleteMapping("/empleados/{id}")
-    public String eliminarEmpleado(@PathVariable int id) {
+    public Map<String, String> eliminarEmpleado(@PathVariable int id) {
         int filas = conexionService.eliminarEmpleado(id);
-        return (filas > 0)
-                ? "Empleado eliminado correctamente"
-                : "Empleado no encontrado";
+        if (filas > 0) {
+            return Map.of("message", "Cliente eliminado correctamente");
+        } else {
+            return Map.of("message", "Cliente no encontrado");
+        }
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -63,10 +64,12 @@ public class ControllerCliente {
 
     // Eliminar cliente
     @DeleteMapping("/clientes/{id}")
-    public String eliminarCliente(@PathVariable int id) {
+    public Map<String, String> eliminarCliente(@PathVariable int id) {
         int filas = conexionService.eliminarCliente(id);
-        return (filas > 0)
-                ? "Cliente eliminado correctamente"
-                : "Cliente no encontrado";
+        if (filas > 0) {
+            return Map.of("message", "Cliente eliminado correctamente");
+        } else {
+            return Map.of("message", "Cliente no encontrado");
+        }
     }
 }
