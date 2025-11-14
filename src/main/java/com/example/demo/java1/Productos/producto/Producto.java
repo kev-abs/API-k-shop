@@ -1,5 +1,7 @@
 package com.example.demo.java1.Productos.producto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Producto {
 
     private int idProducto; // este se genera automáticamente (AUTO_INCREMENT)
@@ -15,13 +17,13 @@ public class Producto {
     public Producto() {}
 
     // Constructor para crear nuevos productos (sin idProducto)
-    public Producto(String nombre, String descripcion, double precio, int stock, int idProveedor, String imagen, String estado) {
+    public Producto(String nombre, String descripcion, double precio, int stock, int idProveedor, MultipartFile imagen, String estado) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
         this.idProveedor = idProveedor;
-        this.imagen = imagen;
+        this.imagen = String.valueOf(imagen);
         this.estado = estado;
     }
 

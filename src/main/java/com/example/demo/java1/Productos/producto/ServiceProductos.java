@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class ServiceProductos {
 
@@ -26,7 +27,7 @@ public class ServiceProductos {
         return productos.isEmpty() ? null : productos.get(0);
     }
 
-    // Insertar producto
+    // Insertar producto (sin imagen binaria, solo nombre)
     public void insertarProducto(Producto producto) {
         String sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Proveedor, Imagen, Estado) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -36,15 +37,16 @@ public class ServiceProductos {
                 producto.getPrecio(),
                 producto.getStock(),
                 producto.getID_Proveedor(),
-                producto.getImagen(),
+                producto.getImagen(),  // nombre del archivo.jpg
                 producto.getEstado()
         );
     }
 
     // Actualizar producto
-    public int actualizarProducto(int id, Producto producto) {
+    public int actualizarProducto(Producto producto, int id) {
         String sql = "UPDATE producto SET Nombre=?, Descripcion=?, Precio=?, Stock=?, ID_Proveedor=?, Imagen=?, Estado=? " +
                 "WHERE ID_Producto=?";
+
         return jdbcTemplate.update(sql,
                 producto.getNombre(),
                 producto.getDescripcion(),
@@ -53,7 +55,7 @@ public class ServiceProductos {
                 producto.getID_Proveedor(),
                 producto.getImagen(),
                 producto.getEstado(),
-                id
+                producto.getIdProducto()   // <-- AQUI EL ERROR QUE TE SALIA
         );
     }
 
