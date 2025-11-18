@@ -30,11 +30,14 @@ public class ConexionControllerPedido {
     }
 
     @PostMapping
-    public ResponseEntity<String> agregar(@RequestBody Pedido pedido) {
+    public ResponseEntity<Pedido> agregar(@RequestBody Pedido pedido) {
         int filas = conexionServicePedido.agregarPedido(pedido);
-        return (filas > 0)
-                ? ResponseEntity.ok("Pedido agregado correctamente")
-                : ResponseEntity.badRequest().body("Error al agregar el pedido");
+
+        if (filas > 0){
+            return ResponseEntity.ok(pedido);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}")
