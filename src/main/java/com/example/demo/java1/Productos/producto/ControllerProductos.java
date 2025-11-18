@@ -7,6 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,71 +21,92 @@ public class ControllerProductos {
     @Autowired
     private ServiceProductos conexionService;
 
-    // Carpeta para guardar las imágenes dentro del proyecto
-    private final String UPLOAD_DIR = System.getProperty("user.dir")
-            + File.separator + "uploads" + File.separator + "productos";
-
-    // Guardar imagen
+    // ============================================================
+    //                MÉTODO PARA GUARDAR IMAGEN
+    // ============================================================
     private String guardarImagen(MultipartFile imagen) throws IOException {
         if (imagen == null || imagen.isEmpty()) return null;
 
-        // Crear carpeta si no existe
-        File directorio = new File(UPLOAD_DIR);
+        String uploadDir = "uploads/productos/";
+        File directorio = new File(uploadDir);
         if (!directorio.exists()) directorio.mkdirs();
 
-        // Generar nombre único para la imagen
-        String nombreArchivo = UUID.randomUUID() + "_" +
-                imagen.getOriginalFilename().replaceAll("[^a-zA-Z0-9\\.\\-\\_]", "_");
+        String nombreImagen = UUID.randomUUID() + "_" + imagen.getOriginalFilename();
+        Path ruta = Paths.get(uploadDir + nombreImagen);
 
-        File destino = new File(directorio, nombreArchivo);
-        imagen.transferTo(destino);
+        Files.copy(imagen.getInputStream(), ruta);
 
-        // Ruta que Spring podrá servir
-        return "/uploads/productos/" + nombreArchivo;
+        return nombreImagen;
     }
 
-    // Eliminar imagen existente
-    private void eliminarImagenExistente(String rutaImagen) {
-        if (rutaImagen == null || rutaImagen.isEmpty()) return;
+    // ============================================================
+    //                ELIMINAR IMAGEN DEL SERVIDOR
+    // ============================================================
+    private void eliminarImagenExistente(String nombreImagen) {
+        if (nombreImagen == null) return;
 
-        File archivo = new File(System.getProperty("user.dir") + rutaImagen.replace("/", File.separator));
-        if (archivo.exists()) archivo.delete();
+        Path ruta = Paths.get("uploads/productos/" + nombreImagen);
+        try {
+            Files.deleteIfExists(ruta);
+        } catch (IOException ignored) {}
     }
 
-    // Listar productos
-    @GetMapping
-    public List<Producto> listarProductos() {
-        return conexionService.obtenerProductos();
-    }
 
-    // Crear producto
-    @PostMapping("/crear")
-    public ResponseEntity<String> crearProducto(
+    // ============================================================
+    //                       INSERTAR PRODUCTO
+    // ============================================================
+    @PostMapping("/insertar")
+    public ResponseEntity<?> insertarProducto(
             @RequestParam("nombre") String nombre,
             @RequestParam("descripcion") String descripcion,
-            @RequestParam("precio") double precio,
+            @RequestParam("precio") Double precio,
             @RequestParam("stock") int stock,
             @RequestParam("idProveedor") int idProveedor,
             @RequestParam("estado") String estado,
             @RequestParam(value = "imagen", required = false) MultipartFile imagen
     ) {
         try {
-            String imagenNombre = guardarImagen(imagen);
+            String nombreImagen = null;
 
-            Producto nuevo = new Producto(nombre, descripcion, precio, stock, idProveedor, imagenNombre, estado);
+            if (imagen != null && !imagen.isEmpty()) {
+                nombreImagen = guardarImagen(imagen);
+            }
+
+            Producto nuevo = new Producto();
+            nuevo.setNombre(nombre);
+            nuevo.setDescripcion(descripcion);
+            nuevo.setPrecio(precio);
+            nuevo.setStock(stock);
+            nuevo.setID_Proveedor(idProveedor);
+            nuevo.setEstado(estado);
+            nuevo.setImagen(nombreImagen);
+
             conexionService.insertarProducto(nuevo);
 
-            return ResponseEntity.ok("Producto creado correctamente con imagen: " + imagenNombre);
-        } catch (IOException e) {
+            return ResponseEntity.ok("Producto insertado con éxito");
+
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError()
-                    .body("Error al guardar la imagen: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error al insertar: " + e.getMessage());
         }
     }
 
-    // Actualizar producto
-    @PutMapping("/actualizar/{id}")
-    public ResponseEntity<String> actualizarProducto(
+    @GetMapping
+    public List<Producto> listarProductos() {
+        return conexionService.obtenerProductos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerProductoPorId(@PathVariable int id) {
+        Producto p = conexionService.obtenerProductoPorId(id);
+        if (p == null)
+            return ResponseEntity.status(404).body("Producto no encontrado");
+
+        return ResponseEntity.ok(p);
+    }
+
+    @PostMapping("actualizar/{id}")
+    public ResponseEntity<?> actualizarProducto(
             @PathVariable int id,
             @RequestParam("nombre") String nombre,
             @RequestParam("descripcion") String descripcion,
@@ -93,44 +117,45 @@ public class ControllerProductos {
             @RequestParam(value = "imagen", required = false) MultipartFile imagen
     ) {
         try {
-            Producto productoActual = conexionService.obtenerProductoPorId(id);
-            if (productoActual == null) return ResponseEntity.status(404).body("No se encontró el producto");
+            Producto p = conexionService.obtenerProductoPorId(id);
+            if (p == null)
+                return ResponseEntity.status(404).body("Producto no encontrado");
 
-            productoActual.setNombre(nombre);
-            productoActual.setDescripcion(descripcion);
-            productoActual.setPrecio(precio);
-            productoActual.setStock(stock);
-            productoActual.setID_Proveedor(idProveedor);
-            productoActual.setEstado(estado);
+            p.setNombre(nombre);
+            p.setDescripcion(descripcion);
+            p.setPrecio(precio);
+            p.setStock(stock);
+            p.setID_Proveedor(idProveedor);
+            p.setEstado(estado);
 
             if (imagen != null && !imagen.isEmpty()) {
-                eliminarImagenExistente(productoActual.getImagen());
+                eliminarImagenExistente(p.getImagen());
                 String nuevaImagen = guardarImagen(imagen);
-                productoActual.setImagen(nuevaImagen);
+                p.setImagen(nuevaImagen);
             }
 
-            int filas = conexionService.actualizarProducto(id, productoActual);
-            return filas > 0
-                    ? ResponseEntity.ok("Producto actualizado correctamente")
-                    : ResponseEntity.status(500).body("No se pudo actualizar el producto");
+            conexionService.actualizarProducto(p, id);
 
-        } catch (IOException e) {
+            return ResponseEntity.ok("Producto actualizado con éxito");
+
+        } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.internalServerError()
-                    .body("Error al actualizar producto: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error al actualizar: " + e.getMessage());
         }
     }
 
-    // Eliminar producto
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<String> eliminarProducto(@PathVariable int id) {
-        Producto producto = conexionService.obtenerProductoPorId(id);
-        if (producto == null) return ResponseEntity.status(404).body("No se encontró el producto");
 
-        eliminarImagenExistente(producto.getImagen());
-        int filas = conexionService.eliminarProducto(id);
-        return filas > 0
-                ? ResponseEntity.ok("Producto eliminado correctamente")
-                : ResponseEntity.status(500).body("No se pudo eliminar el producto");
+    @DeleteMapping("eliminar/{id}")
+    public ResponseEntity<?> eliminarProducto(@PathVariable int id) {
+
+        Producto p = conexionService.obtenerProductoPorId(id);
+        if (p == null)
+            return ResponseEntity.status(404).body("Producto no encontrado");
+
+        eliminarImagenExistente(p.getImagen());
+        conexionService.eliminarProducto(id);
+
+        return ResponseEntity.ok("Producto eliminado con éxito");
     }
 }
+

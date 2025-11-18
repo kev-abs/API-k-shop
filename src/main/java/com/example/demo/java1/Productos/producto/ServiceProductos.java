@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+
 @Service
 public class ServiceProductos {
 
@@ -26,7 +27,7 @@ public class ServiceProductos {
         return productos.isEmpty() ? null : productos.get(0);
     }
 
-    // Insertar producto
+    // Insertar producto (sin imagen binaria, solo nombre)
     public void insertarProducto(Producto producto) {
         String sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Proveedor, Imagen, Estado) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -42,9 +43,10 @@ public class ServiceProductos {
     }
 
     // Actualizar producto
-    public int actualizarProducto(int id, Producto producto) {
+    public int actualizarProducto(Producto producto, int id) {
         String sql = "UPDATE producto SET Nombre=?, Descripcion=?, Precio=?, Stock=?, ID_Proveedor=?, Imagen=?, Estado=? " +
                 "WHERE ID_Producto=?";
+
         return jdbcTemplate.update(sql,
                 producto.getNombre(),
                 producto.getDescripcion(),
