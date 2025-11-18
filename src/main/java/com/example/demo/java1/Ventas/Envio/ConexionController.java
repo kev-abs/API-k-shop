@@ -21,9 +21,9 @@ public class ConexionController {
 
     // POST /envio -> agregar un envío
     @PostMapping
-    public String agregarEnvio(@RequestBody Envio envio) {
+    public Envio agregarEnvio(@RequestBody Envio envio) {
         conexionService.agregarEnvio(envio);
-        return "Envío agregado correctamente";
+        return envio;
     }
 
     // PUT /envio/{id} -> actualizar un envío
