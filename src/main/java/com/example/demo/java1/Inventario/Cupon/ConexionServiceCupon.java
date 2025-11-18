@@ -20,6 +20,7 @@ public class ConexionServiceCupon {
         String sql = "SELECT * FROM cupon";
         return jdbcTemplate.query(sql, new RowMapper<Cupon>() {
             @Override
+
             public Cupon mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Cupon c = new Cupon();
                 c.setID_Cupon(rs.getInt("ID_Cupon"));
