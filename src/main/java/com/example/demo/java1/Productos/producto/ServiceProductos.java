@@ -37,7 +37,7 @@ public class ServiceProductos {
                 producto.getPrecio(),
                 producto.getStock(),
                 producto.getID_Proveedor(),
-                producto.getImagen(),  // nombre del archivo.jpg
+                producto.getImagen(),
                 producto.getEstado()
         );
     }
@@ -55,7 +55,7 @@ public class ServiceProductos {
                 producto.getID_Proveedor(),
                 producto.getImagen(),
                 producto.getEstado(),
-                producto.getIdProducto()   // <-- AQUI EL ERROR QUE TE SALIA
+                id
         );
     }
 

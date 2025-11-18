@@ -1,56 +1,40 @@
 package com.example.demo.java1.Productos.producto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 public class Producto {
 
-    private int idProducto; // este se genera automáticamente (AUTO_INCREMENT)
-    private String nombre;
-    private String descripcion;
-    private double precio;
-    private int stock;
-    private int idProveedor;
-    private String imagen;
-    private String estado;
+    private Integer ID_Producto;
+    private String Nombre;
+    private String Descripcion;
+    private Double Precio;
+    private Integer Stock;
+    private Integer ID_Proveedor;
+    private String Imagen;
+    private String Estado;
 
-    // Constructor vacío (obligatorio para Spring)
     public Producto() {}
 
-    // Constructor para crear nuevos productos (sin idProducto)
-    public Producto(String nombre, String descripcion, double precio, int stock, int idProveedor, MultipartFile imagen, String estado) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.precio = precio;
-        this.stock = stock;
-        this.idProveedor = idProveedor;
-        this.imagen = String.valueOf(imagen);
-        this.estado = estado;
-    }
-
     // Getters y Setters
-    public int getIdProducto() { return idProducto; }
-    public void setIdProducto(int idProducto) { this.idProducto = idProducto; }
+    public Integer getID_Producto() { return ID_Producto; }
+    public void setID_Producto(Integer id) { this.ID_Producto = id; }
 
-    public String getNombre() { return nombre; }
-    public void setNombre(String nombre) { this.nombre = nombre; }
+    public String getNombre() { return Nombre; }
+    public void setNombre(String nombre) { this.Nombre = nombre; }
 
-    public String getDescripcion() { return descripcion; }
-    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
+    public String getDescripcion() { return Descripcion; }
+    public void setDescripcion(String descripcion) { this.Descripcion = descripcion; }
 
-    public double getPrecio() { return precio; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public Double getPrecio() { return Precio; }
+    public void setPrecio(Double precio) { this.Precio = precio; }
 
-    public int getStock() { return stock; }
-    public void setStock(int stock) { this.stock = stock; }
+    public Integer getStock() { return Stock; }
+    public void setStock(Integer stock) { this.Stock = stock; }
 
-    public int getID_Proveedor() { return idProveedor; }
-    public void setID_Proveedor(int idProveedor) { this.idProveedor = idProveedor; }
+    public Integer getID_Proveedor() { return ID_Proveedor; }
+    public void setID_Proveedor(Integer idProveedor) { this.ID_Proveedor = idProveedor; }
 
-    public String getImagen() { return imagen; }
-    public void setImagen(String imagen) { this.imagen = imagen; }
+    public String getImagen() { return Imagen; }
+    public void setImagen(String imagen) { this.Imagen = imagen; }
 
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
-
-
+    public String getEstado() { return Estado; }
+    public void setEstado(String estado) { this.Estado = estado; }
 }

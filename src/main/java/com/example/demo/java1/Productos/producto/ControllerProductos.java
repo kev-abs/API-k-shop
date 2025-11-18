@@ -21,6 +21,9 @@ public class ControllerProductos {
     @Autowired
     private ServiceProductos conexionService;
 
+    // ============================================================
+    //                MÉTODO PARA GUARDAR IMAGEN
+    // ============================================================
     private String guardarImagen(MultipartFile imagen) throws IOException {
         if (imagen == null || imagen.isEmpty()) return null;
 
@@ -36,7 +39,9 @@ public class ControllerProductos {
         return nombreImagen;
     }
 
-    // ==========  ELIMINAR IMAGEN  ==========
+    // ============================================================
+    //                ELIMINAR IMAGEN DEL SERVIDOR
+    // ============================================================
     private void eliminarImagenExistente(String nombreImagen) {
         if (nombreImagen == null) return;
 
@@ -46,7 +51,10 @@ public class ControllerProductos {
         } catch (IOException ignored) {}
     }
 
-    // ==========  INSERTAR PRODUCTO  ==========
+
+    // ============================================================
+    //                       INSERTAR PRODUCTO
+    // ============================================================
     @PostMapping("/insertar")
     public ResponseEntity<?> insertarProducto(
             @RequestParam("nombre") String nombre,
@@ -55,10 +63,14 @@ public class ControllerProductos {
             @RequestParam("stock") int stock,
             @RequestParam("idProveedor") int idProveedor,
             @RequestParam("estado") String estado,
-            @RequestParam("imagen") MultipartFile imagen
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen
     ) {
         try {
-            String nombreImagen = guardarImagen(imagen);
+            String nombreImagen = null;
+
+            if (imagen != null && !imagen.isEmpty()) {
+                nombreImagen = guardarImagen(imagen);
+            }
 
             Producto nuevo = new Producto();
             nuevo.setNombre(nombre);
@@ -75,18 +87,25 @@ public class ControllerProductos {
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error al insertar: " + e.getMessage());
         }
     }
 
-    // ========== LISTAR PRODUCTOS ==========
     @GetMapping
     public List<Producto> listarProductos() {
         return conexionService.obtenerProductos();
     }
 
-    // ========== ACTUALIZAR PRODUCTO ==========
-    @PutMapping("/actualizar/{id}")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerProductoPorId(@PathVariable int id) {
+        Producto p = conexionService.obtenerProductoPorId(id);
+        if (p == null)
+            return ResponseEntity.status(404).body("Producto no encontrado");
+
+        return ResponseEntity.ok(p);
+    }
+
+    @PostMapping("actualizar/{id}")
     public ResponseEntity<?> actualizarProducto(
             @PathVariable int id,
             @RequestParam("nombre") String nombre,
@@ -117,16 +136,16 @@ public class ControllerProductos {
 
             conexionService.actualizarProducto(p, id);
 
-            return ResponseEntity.ok("Producto actualizado");
+            return ResponseEntity.ok("Producto actualizado con éxito");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error al actualizar: " + e.getMessage());
         }
     }
 
-    // ========== ELIMINAR PRODUCTO ==========
-    @DeleteMapping("/eliminar/{id}")
+
+    @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarProducto(@PathVariable int id) {
 
         Producto p = conexionService.obtenerProductoPorId(id);
@@ -136,6 +155,7 @@ public class ControllerProductos {
         eliminarImagenExistente(p.getImagen());
         conexionService.eliminarProducto(id);
 
-        return ResponseEntity.ok("Producto eliminado");
+        return ResponseEntity.ok("Producto eliminado con éxito");
     }
 }
+
