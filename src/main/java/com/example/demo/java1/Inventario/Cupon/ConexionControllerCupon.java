@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ConexionControllerCupon {
@@ -33,12 +34,12 @@ public class ConexionControllerCupon {
     }
 
     @DeleteMapping("/cupon/{id}")
-    public ResponseEntity<String> eliminarCupon(@PathVariable int id) {
+    public Map<String, String> eliminarCupon(@PathVariable int id) {
         boolean eliminado = conexionServiceCupon.eliminarCupon(id);
         if (eliminado) {
-            return ResponseEntity.ok("Cupon eliminado correctamente");
+            return Map.of("message","Cupon eliminado correctamente");
         } else {
-            return ResponseEntity.notFound().build();
+            return Map.of("message","Cupon no eliminado");
         }
     }
 
