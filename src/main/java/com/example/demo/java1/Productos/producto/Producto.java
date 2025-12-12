@@ -6,6 +6,7 @@ public class Producto {
     private String Nombre;
     private String Descripcion;
     private Double Precio;
+    private Integer ID_Categoria;
     private Integer Stock;
     private Integer ID_Proveedor;
     private String Imagen;
@@ -25,7 +26,8 @@ public class Producto {
 
     public Double getPrecio() { return Precio; }
     public void setPrecio(Double precio) { this.Precio = precio; }
-
+    public Integer getID_Categoria() {return ID_Categoria;}
+    public void setID_Categoria(Integer ID_Categoria) {this.ID_Categoria = ID_Categoria;}
     public Integer getStock() { return Stock; }
     public void setStock(Integer stock) { this.Stock = stock; }
 

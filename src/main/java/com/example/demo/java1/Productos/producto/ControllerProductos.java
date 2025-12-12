@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -83,7 +84,11 @@ public class ControllerProductos {
 
             conexionService.insertarProducto(nuevo);
 
-            return ResponseEntity.ok("Producto insertado con éxito");
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "idProducto", nuevo.getID_Producto()
+            ));
+
 
         } catch (Exception e) {
             e.printStackTrace();
