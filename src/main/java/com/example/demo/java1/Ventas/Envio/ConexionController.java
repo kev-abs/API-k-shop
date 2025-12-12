@@ -1,5 +1,6 @@
 package com.example.demo.java1.Ventas.Envio;
 
+import com.example.demo.java1.Ventas.Pedido.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,16 @@ public class ConexionController {
     @GetMapping
     public List<Envio> obtenerEnvios() {
         return conexionService.obtenerEnvios();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Envio> obtenerPorId(@PathVariable int id) {
+        try {
+            Envio envio = conexionService.obtenerEnvioPorId(id);
+            return ResponseEntity.ok(envio);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     // POST /envio -> agregar un envío

@@ -1,7 +1,9 @@
 package com.example.demo.java1.Ventas.Envio;
 
 
+import com.example.demo.java1.Ventas.Pedido.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,11 @@ public class ConexionService {
                 return envio;
             }
         });
+    }
+
+    public Envio obtenerEnvioPorId(int id) {
+        String sql = "SELECT * FROM envio WHERE ID_Envio = ?";
+        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Envio.class), id);
     }
 
     // Agregar un envío
