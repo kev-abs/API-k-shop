@@ -1,5 +1,7 @@
 package com.example.demo.java1.Usuario.empleado;
 
+import java.math.BigInteger;
+
 public class EmpleadoDTO {
 
     public String getNombre() {
@@ -50,6 +52,15 @@ public class EmpleadoDTO {
         this.estado = estado;
     }
 
+    public BigInteger getIdEmpleado() {
+        return IdEmpleado;
+    }
+
+    public void setIdEmpleado(BigInteger idEmpleado) {
+        IdEmpleado = idEmpleado;
+    }
+
+    private BigInteger IdEmpleado;
     private String nombre;
     private String cargo;
     private String correo;

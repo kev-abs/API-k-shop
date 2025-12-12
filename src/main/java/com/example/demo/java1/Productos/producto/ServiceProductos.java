@@ -1,13 +1,12 @@
 package com.example.demo.java1.Productos.producto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Service;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.List;
+
 
 @Service
 public class ServiceProductos {
@@ -16,48 +15,44 @@ public class ServiceProductos {
     private JdbcTemplate jdbcTemplate;
 
     // Obtener lista de productos
-    public List<String> obtenerProductos() {
+    public List<Producto> obtenerProductos() {
         String sql = "SELECT * FROM producto";
-        return jdbcTemplate.query(sql, new RowMapper<String>() {
-            @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getInt("ID_Producto") + " | " +
-                        rs.getString("Nombre") + " | " +
-                        rs.getString("Descripcion") + " | " +
-                        rs.getDouble("Precio") + " | Stock: " +
-                        rs.getInt("Stock") + " | " +
-                        rs.getInt("ID_Proveedor") + " | " +
-                        rs.getString("Imagen") + " | " +
-                        rs.getString("Estado");
-            }
-        });
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Producto.class));
     }
 
-    // Insertar producto
-    public int insertarProducto(Producto producto) {
+    // Obtener producto por ID
+    public Producto obtenerProductoPorId(int id) {
+        String sql = "SELECT * FROM producto WHERE ID_Producto = ?";
+        List<Producto> productos = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Producto.class), id);
+        return productos.isEmpty() ? null : productos.get(0);
+    }
+
+    // Insertar producto (sin imagen binaria, solo nombre)
+    public void insertarProducto(Producto producto) {
         String sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Proveedor, Imagen, Estado) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql,
+        jdbcTemplate.update(sql,
                 producto.getNombre(),
                 producto.getDescripcion(),
                 producto.getPrecio(),
                 producto.getStock(),
-                producto.getIdProveedor(),
+                producto.getID_Proveedor(),
                 producto.getImagen(),
                 producto.getEstado()
         );
     }
 
     // Actualizar producto
-    public int actualizarProducto(int id, Producto producto) {
+    public int actualizarProducto(Producto producto, int id) {
         String sql = "UPDATE producto SET Nombre=?, Descripcion=?, Precio=?, Stock=?, ID_Proveedor=?, Imagen=?, Estado=? " +
                 "WHERE ID_Producto=?";
+
         return jdbcTemplate.update(sql,
                 producto.getNombre(),
                 producto.getDescripcion(),
                 producto.getPrecio(),
                 producto.getStock(),
-                producto.getIdProveedor(),
+                producto.getID_Proveedor(),
                 producto.getImagen(),
                 producto.getEstado(),
                 id

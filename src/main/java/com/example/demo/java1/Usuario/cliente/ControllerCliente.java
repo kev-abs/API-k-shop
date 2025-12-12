@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class ControllerCliente {
 
@@ -13,15 +15,15 @@ public class ControllerCliente {
 
     // Listar clientes
     @GetMapping("/clientes")
-    public List<String> listarClientes() {
-        return conexionService.obtenerClientes();
+    public List<ClienteDTO> obtenerClientes() {
+        return conexionService.obtenerClientes(); // <-- antes ponías ServiceCliente, debe ser el objeto
     }
 
     // Crear cliente
     @PostMapping("/clientes")
-    public String crearCliente(@RequestBody ClienteDTO cliente) {
+    public ClienteDTO crearCliente(@RequestBody ClienteDTO cliente) {
         if (cliente.getNombre() == null || cliente.getNombre().trim().isEmpty()) {
-            return "Error: El nombre no puede estar vacío";
+            throw new RuntimeException("El nombre no puede estar vacío");
         }
 
         int filas = conexionService.insertarCliente(
@@ -32,32 +34,42 @@ public class ControllerCliente {
                 cliente.getTelefono()
         );
 
-        return (filas > 0) ? "Cliente agregado correctamente" : "Error al agregar cliente";
+        if (filas > 0) {
+            return cliente; // Devuelve el cliente recién creado en JSON
+        } else {
+            throw new RuntimeException("Error al agregar cliente");
+        }
     }
 
     // Actualizar cliente
     @PutMapping("/clientes/{id}")
-    public String actualizarCliente(@PathVariable int id, @RequestBody ClienteDTO cliente) {
+    public ClienteDTO actualizarCliente(@PathVariable int id, @RequestBody ClienteDTO cliente) {
         int filas = conexionService.actualizarCliente(
                 id,
                 cliente.getNombre(),
                 cliente.getCorreo(),
                 cliente.getContrasena(),
-                cliente.getFechaRegistro(),
                 cliente.getEstado(),
                 cliente.getDocumento(),
                 cliente.getTelefono()
         );
 
-        return (filas > 0) ? "Cliente actualizado correctamente" : "Cliente no encontrado o sin cambios";
+        if (filas > 0) {
+            cliente.setIdCliente(id); // Asegura que el ID esté correcto
+            return cliente; // Devuelve el cliente actualizado en JSON
+        } else {
+            throw new RuntimeException("Cliente no encontrado o sin cambios");
+        }
     }
 
     // Eliminar cliente
     @DeleteMapping("/clientes/{id}")
-    public String eliminarCliente(@PathVariable int id) {
+    public Map<String, String> eliminarCliente(@PathVariable int id) {
         int filas = conexionService.eliminarCliente(id);
-        return (filas > 0)
-                ? "Cliente eliminado correctamente"
-                : "Cliente no encontrado";
+        if (filas > 0) {
+            return Map.of("message", "Cliente eliminado correctamente");
+        } else {
+            return Map.of("message", "Cliente no encontrado");
+        }
     }
 }

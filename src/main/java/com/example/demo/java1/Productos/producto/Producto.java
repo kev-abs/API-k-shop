@@ -2,68 +2,39 @@ package com.example.demo.java1.Productos.producto;
 
 public class Producto {
 
+    private Integer ID_Producto;
+    private String Nombre;
+    private String Descripcion;
+    private Double Precio;
+    private Integer Stock;
+    private Integer ID_Proveedor;
+    private String Imagen;
+    private String Estado;
 
-    public String getNombre() {
-        return nombre;
-    }
+    public Producto() {}
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    // Getters y Setters
+    public Integer getID_Producto() { return ID_Producto; }
+    public void setID_Producto(Integer id) { this.ID_Producto = id; }
 
-    public String getDescripcion() {
-        return descripcion;
-    }
+    public String getNombre() { return Nombre; }
+    public void setNombre(String nombre) { this.Nombre = nombre; }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
+    public String getDescripcion() { return Descripcion; }
+    public void setDescripcion(String descripcion) { this.Descripcion = descripcion; }
 
-    public double getPrecio() {
-        return precio;
-    }
+    public Double getPrecio() { return Precio; }
+    public void setPrecio(Double precio) { this.Precio = precio; }
 
-    public void setPrecio(double precio) {
-        this.precio = precio;
-    }
+    public Integer getStock() { return Stock; }
+    public void setStock(Integer stock) { this.Stock = stock; }
 
-    public int getStock() {
-        return stock;
-    }
+    public Integer getID_Proveedor() { return ID_Proveedor; }
+    public void setID_Proveedor(Integer idProveedor) { this.ID_Proveedor = idProveedor; }
 
-    public void setStock(int stock) {
-        this.stock = stock;
-    }
+    public String getImagen() { return Imagen; }
+    public void setImagen(String imagen) { this.Imagen = imagen; }
 
-    public int getIdProveedor() {
-        return idProveedor;
-    }
-
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
-    }
-
-    public String getImagen() {
-        return imagen;
-    }
-
-    public void setImagen(String imagen) {
-        this.imagen = imagen;
-    }
-
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
-
-    private String nombre;
-    private String descripcion;
-    private double precio;
-    private int stock;
-    private int idProveedor;
-    private String imagen;
-    private String estado;
+    public String getEstado() { return Estado; }
+    public void setEstado(String estado) { this.Estado = estado; }
 }
