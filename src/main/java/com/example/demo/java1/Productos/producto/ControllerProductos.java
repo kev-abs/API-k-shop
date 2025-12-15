@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
@@ -21,9 +22,6 @@ public class ControllerProductos {
     @Autowired
     private ServiceProductos conexionService;
 
-    // ============================================================
-    //                MÉTODO PARA GUARDAR IMAGEN
-    // ============================================================
     private String guardarImagen(MultipartFile imagen) throws IOException {
         if (imagen == null || imagen.isEmpty()) return null;
 
@@ -31,17 +29,23 @@ public class ControllerProductos {
         File directorio = new File(uploadDir);
         if (!directorio.exists()) directorio.mkdirs();
 
-        String nombreImagen = UUID.randomUUID() + "_" + imagen.getOriginalFilename();
-        Path ruta = Paths.get(uploadDir + nombreImagen);
+        // Obtener extensión del archivo original
+        String original = imagen.getOriginalFilename();
+        String extension = "";
+        int punto = original.lastIndexOf(".");
+        if (punto != -1) {
+            extension = original.substring(punto); // .jpg, .png, etc.
+        }
 
+        // Generar nombre corto
+        String nombreCorto = UUID.randomUUID().toString().substring(0, 8) + extension;
+
+        Path ruta = Paths.get(uploadDir + nombreCorto);
         Files.copy(imagen.getInputStream(), ruta);
 
-        return nombreImagen;
+        return nombreCorto;
     }
 
-    // ============================================================
-    //                ELIMINAR IMAGEN DEL SERVIDOR
-    // ============================================================
     private void eliminarImagenExistente(String nombreImagen) {
         if (nombreImagen == null) return;
 
@@ -52,9 +56,6 @@ public class ControllerProductos {
     }
 
 
-    // ============================================================
-    //                       INSERTAR PRODUCTO
-    // ============================================================
     @PostMapping("/insertar")
     public ResponseEntity<?> insertarProducto(
             @RequestParam("nombre") String nombre,
@@ -83,7 +84,11 @@ public class ControllerProductos {
 
             conexionService.insertarProducto(nuevo);
 
-            return ResponseEntity.ok("Producto insertado con éxito");
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "idProducto", nuevo.getID_Producto()
+            ));
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,7 +110,7 @@ public class ControllerProductos {
         return ResponseEntity.ok(p);
     }
 
-    @PostMapping("actualizar/{id}")
+    @PutMapping("actualizar/{id}")
     public ResponseEntity<?> actualizarProducto(
             @PathVariable int id,
             @RequestParam("nombre") String nombre,

@@ -23,9 +23,21 @@ public class ServiceProductos {
     // Obtener producto por ID
     public Producto obtenerProductoPorId(int id) {
         String sql = "SELECT * FROM producto WHERE ID_Producto = ?";
-        List<Producto> productos = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Producto.class), id);
-        return productos.isEmpty() ? null : productos.get(0);
+
+        return jdbcTemplate.queryForObject(sql, new Object[]{id}, (rs, rowNum) -> {
+            Producto p = new Producto();
+            p.setID_Producto(rs.getInt("ID_Producto"));
+            p.setNombre(rs.getString("Nombre"));
+            p.setDescripcion(rs.getString("Descripcion"));
+            p.setPrecio(rs.getDouble("Precio"));
+            p.setStock(rs.getInt("Stock"));
+            p.setID_Proveedor(rs.getInt("ID_Proveedor"));
+            p.setImagen(rs.getString("Imagen"));
+            p.setEstado(rs.getString("Estado"));
+            return p;
+        });
     }
+
 
     // Insertar producto (sin imagen binaria, solo nombre)
     public void insertarProducto(Producto producto) {

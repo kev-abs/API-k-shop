@@ -45,7 +45,7 @@ public class AuthController {
             EmpleadoDTO emp = empleados.get(0);
             String contrasenaBD = emp.getContrasena();
 
-            if (contrasena.equals(contrasenaBD)) {
+            if (PasswordUtils.verificar(contrasena, contrasenaBD)){
                 String token = jwtUtil.generarToken(emp.getCorreo());
                 return new LoginResponse(true, "Bienvenido " + emp.getNombre(), "empleado", token);
             }
