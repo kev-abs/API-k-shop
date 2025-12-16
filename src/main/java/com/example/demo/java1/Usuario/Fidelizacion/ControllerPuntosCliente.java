@@ -1,5 +1,6 @@
 package com.example.demo.java1.Usuario.Fidelizacion;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
@@ -7,7 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
-
+@SecurityRequirement(name = "BearerAuth")
 @Tag(name = "Puntos", description = "Operaciones sobre la tabla fidelizacion")
 @RestController
 @RequestMapping("/puntos")

@@ -5,8 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@Tag(name = "DetallePedido", description = "Detalles de la tabla pedidos")
 @RequestMapping("/detalle")
 public class ControllerDetallePedido {
 
@@ -14,12 +17,20 @@ public class ControllerDetallePedido {
     private ServiceDetallePedido serviceDetallePedido;
 
     @GetMapping
+    @Operation(
+            summary = "Obtener detalles de pedidos",
+            description = "Permite obtener el listado de todos los detalles asociados a los pedidos registrados"
+    )
     public List<String> obtenerDetalles() {
         return serviceDetallePedido.obtenerDetalles();
     }
 
-    // POST: insertar detalle
+
     @PostMapping
+    @Operation(
+            summary = "Agregar detalle de pedido",
+            description = "Permite registrar un nuevo detalle de pedido asociando producto, cantidad y precio unitario"
+    )
     public ResponseEntity<String> insertarDetalle(@RequestBody DetallePedido detalle) {
         int filas = serviceDetallePedido.insertarDetalle(
                 detalle.getID_Pedido(),
@@ -35,6 +46,10 @@ public class ControllerDetallePedido {
     }
 
     @PutMapping("/detalle/{id}")
+    @Operation(
+            summary = "Actualizar detalle de pedido",
+            description = "Permite actualizar la información de un detalle de pedido existente mediante su identificador"
+    )
     public ResponseEntity<String> actualizarDetalle(@PathVariable int id, @RequestBody DetallePedido detalle) {
         int filas = serviceDetallePedido.actualizarDetalle(
                 id,
@@ -50,9 +65,13 @@ public class ControllerDetallePedido {
         }
     }
 
-        // DELETE: eliminar detalle
+
         @DeleteMapping("/detalle/{id}")
-        public ResponseEntity<String> eliminarDetalle ( @PathVariable int idDetalle){
+        @Operation(
+                summary = "Eliminar detalle de pedido",
+                description = "Permite eliminar un detalle de pedido del sistema mediante su identificador"
+        )
+        public ResponseEntity<String> eliminarDetalle ( @PathVariable("id") int idDetalle){
             int filas = serviceDetallePedido.eliminarDetalle(idDetalle);
             if (filas > 0) {
                 return ResponseEntity.ok("Detalle eliminado correctamente");

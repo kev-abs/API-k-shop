@@ -3,8 +3,11 @@ package com.example.demo.java1.Ventas.Pedido;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
+@Tag(name = "Pedido", description = "Operaciones sobre la tabla pedido")
 @RequestMapping("/pedido")
 public class ConexionControllerPedido {
 
@@ -15,6 +18,8 @@ public class ConexionControllerPedido {
     }
 
     @GetMapping
+    @Operation(summary = " Obtener Pedido",
+            description = "Nos permite obtener datos de los pedidos ya registrados")
     public List<Pedido> obtenerTodos() {
         return conexionServicePedido.obtenerPedidos();
     }
@@ -30,6 +35,8 @@ public class ConexionControllerPedido {
     }
 
     @PostMapping
+    @Operation(summary = "Agregar Pedidos",
+            description = "Nos permite agregar pedidos")
     public ResponseEntity<Pedido> agregar(@RequestBody Pedido pedido) {
         int filas = conexionServicePedido.agregarPedido(pedido);
 
@@ -41,6 +48,8 @@ public class ConexionControllerPedido {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar Pedidos",
+            description = "Nos permite actulizar los pedidos")
     public ResponseEntity<String> actualizar(@PathVariable int id, @RequestBody Pedido pedido) {
         int filas = conexionServicePedido.actualizarPedido(id, pedido);
         return (filas > 0)
@@ -49,6 +58,8 @@ public class ConexionControllerPedido {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar Pedidos",
+            description = "Nos permite eliminar los pedidos")
     public ResponseEntity<String> eliminar(@PathVariable int id) {
         int filas = conexionServicePedido.eliminarPedido(id);
         return (filas > 0)
