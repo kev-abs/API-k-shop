@@ -36,7 +36,7 @@ public class ConexionServiceCupon {
             throw new IllegalArgumentException("El código del cupón no puede estar vacío");
         }
 
-        String sql = "INSERT INTO cupon (Codigo, Descuento, Fecha_Expiracion) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO cupon (Codigo, Descuento, fecha_Expiracion) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql,
                 cupon.getCodigo(),
                 cupon.getDescuento(),
