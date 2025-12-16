@@ -16,10 +16,14 @@ public class CategoriaController {
 
     @Autowired
     private CategoriaService categoriaService;
-
+    @GetMapping("/categorias")
+    public ResponseEntity<?> listarCategorias() {
+        return ResponseEntity.ok(
+                categoriaService.listarCategorias()
+        );
+    }
     @GetMapping("/categorias-con-productos")
     public ResponseEntity<?> categoriasConProductos() {
-
         return ResponseEntity.ok(
                 categoriaService.listarCategoriasConProductos()
         );

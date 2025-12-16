@@ -13,25 +13,40 @@ public class CategoriaRepository {
     @Autowired
     private JdbcTemplate jdbc;
 
-    public List<Categoria> obtenerCategoriasConProductos() {
+    public List<Categoria> listarCategorias() {
+
+        String sql = "SELECT id_categoria, nombre FROM categoria";
+
+        return jdbc.query(sql, (rs, rowNum) -> {
+            Categoria c = new Categoria();
+            c.setIdCategoria(rs.getInt("id_categoria"));
+            c.setNombre(rs.getString("nombre"));
+            return c;
+        });
+    }
+
+    public List<CategoriaConProductos> obtenerCategoriasConProductos() {
 
         String sql = """
-            SELECT c.id_categoria, c.nombre AS categoria,
-                   p.id_producto, p.nombre AS producto, p.precio
-            FROM categoria c
-            JOIN producto_categoria pc ON c.id_categoria = pc.id_categoria
-            JOIN producto p ON pc.id_producto = p.id_producto
-            WHERE p.estado = 'Disponible'
-        """;
+        SELECT
+                        c.id_categoria,
+                        c.nombre AS categoria,
+                        p.id_producto,
+                        p.nombre AS producto,
+                        p.precio
+                    FROM categoria c
+                    JOIN producto_categoria pc ON c.id_categoria = pc.id_categoria
+                    JOIN producto p ON pc.id_producto = p.id_producto
+    """;
 
-        Map<Integer, Categoria> mapa = new HashMap<>();
+        Map<Integer, CategoriaConProductos> mapa = new HashMap<>();
 
         jdbc.query(sql, rs -> {
             int idCategoria = rs.getInt("id_categoria");
 
-            Categoria categoria = mapa.get(idCategoria);
+            CategoriaConProductos categoria = mapa.get(idCategoria);
             if (categoria == null) {
-                categoria = new Categoria();
+                categoria = new CategoriaConProductos();
                 categoria.setIdCategoria(idCategoria);
                 categoria.setNombre(rs.getString("categoria"));
                 categoria.setProductos(new ArrayList<>());
@@ -41,7 +56,9 @@ public class CategoriaRepository {
             Producto producto = new Producto();
             producto.setID_Producto(rs.getInt("id_producto"));
             producto.setNombre(rs.getString("producto"));
+            producto.setDescripcion(rs.getString("descripcion"));
             producto.setPrecio(rs.getDouble("precio"));
+            producto.setImagen(rs.getString("imagen"));
 
             categoria.getProductos().add(producto);
         });

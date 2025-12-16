@@ -10,8 +10,10 @@ public class CategoriaService {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
-
-    public List<Categoria> listarCategoriasConProductos() {
+    public List<Categoria> listarCategorias() {
+        return categoriaRepository.listarCategorias();
+    }
+    public List<CategoriaConProductos> listarCategoriasConProductos() {
         return categoriaRepository.obtenerCategoriasConProductos();
     }
 }

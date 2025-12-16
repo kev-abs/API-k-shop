@@ -1,16 +1,14 @@
 package com.example.demo.java1.Productos.Categoria;
 
-import com.example.demo.java1.Productos.producto.Producto;
 
-import java.util.ArrayList;
+import com.example.demo.java1.Productos.producto.Producto;
 import java.util.List;
 
-public class Categoria {
+public class CategoriaConProductos {
 
     private Integer idCategoria;
     private String nombre;
-
-    public Categoria() {}
+    private List<Producto> productos;
 
     public Integer getIdCategoria() {
         return idCategoria;
@@ -26,5 +24,13 @@ public class Categoria {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public List<Producto> getProductos() {
+        return productos;
+    }
+
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
     }
 }
