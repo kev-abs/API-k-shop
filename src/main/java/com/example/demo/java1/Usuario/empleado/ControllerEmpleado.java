@@ -1,5 +1,6 @@
 package com.example.demo.java1.Usuario.empleado;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@SecurityRequirement(name = "BearerAuth")
 @Tag(name = "Empleados", description = "Operaciones sobre la tabla empleado")
 @CrossOrigin(origins = "*")
 @RestController
