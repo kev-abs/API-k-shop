@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -11,12 +14,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-
+@Tag(name = "Productos", description = "Operaciones sobre la tabla productos")
 @RestController
 @RequestMapping("/productos")
+
 @CrossOrigin(origins = "*")
 public class ControllerProductos {
+
 
     @Autowired
     private ServiceProductos conexionService;
@@ -56,6 +62,8 @@ public class ControllerProductos {
 
 
     @PostMapping("/insertar")
+    @Operation(summary = " Ingresar Productos",
+            description = "Permite ingresar productos nuevos al sistema")
     public ResponseEntity<?> insertarProducto(
             @RequestParam("nombre") String nombre,
             @RequestParam("descripcion") String descripcion,
@@ -83,7 +91,11 @@ public class ControllerProductos {
 
             conexionService.insertarProducto(nuevo);
 
-            return ResponseEntity.ok("Producto insertado con éxito");
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "idProducto", nuevo.getID_Producto()
+            ));
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,11 +104,15 @@ public class ControllerProductos {
     }
 
     @GetMapping
+    @Operation(summary = "Obtener productos",
+            description = "Devuelve una lista con todos los productos almacenados en la tabla productos")
     public List<Producto> listarProductos() {
         return conexionService.obtenerProductos();
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener Productos por id",
+            description = "Devuelve una lista con el productos que se elija por id")
     public ResponseEntity<?> obtenerProductoPorId(@PathVariable int id) {
         Producto p = conexionService.obtenerProductoPorId(id);
         if (p == null)
@@ -106,6 +122,8 @@ public class ControllerProductos {
     }
 
     @PutMapping("actualizar/{id}")
+    @Operation(summary = "Actualizar Productos",
+            description = "Permite actualizar los datos almacenados en la tabla productos")
     public ResponseEntity<?> actualizarProducto(
             @PathVariable int id,
             @RequestParam("nombre") String nombre,
@@ -146,6 +164,8 @@ public class ControllerProductos {
 
 
     @DeleteMapping("eliminar/{id}")
+    @Operation(summary = "Eliminar Productos",
+            description = "Permite eliminar datos de la tabla de productos")
     public ResponseEntity<?> eliminarProducto(@PathVariable int id) {
 
         Producto p = conexionService.obtenerProductoPorId(id);

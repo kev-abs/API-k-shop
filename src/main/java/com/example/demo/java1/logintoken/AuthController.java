@@ -3,6 +3,8 @@ package com.example.demo.java1.logintoken;
 import com.example.demo.java1.Usuario.cliente.ClienteDTO;
 import com.example.demo.java1.Usuario.empleado.EmpleadoDTO;
 import com.example.demo.java1.utils.PasswordUtils;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(
+        name = "Autenticación",
+        description = "Endpoints para login y generación de token JWT"
+)
 public class AuthController {
 
     @Autowired
@@ -20,6 +26,10 @@ public class AuthController {
     private JdbcTemplate jdbcTemplate;
 
     @PostMapping("/login")
+    @Operation(
+            summary = "Login de usuario",
+            description = "Valida credenciales de empleado o cliente y devuelve un token JWT"
+    )
     public LoginResponse login(@RequestBody LoginRequest request) {
 
         String correo = request.getCorreo();
