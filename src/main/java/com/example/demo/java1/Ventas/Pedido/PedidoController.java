@@ -40,4 +40,10 @@ public class PedidoController {
         return pedidoService.obtenerDetallePedido(idPedido);
     }
 
+    @GetMapping
+    public List<Pedido> listarTodos() {
+        return pedidoService.listarTodos();
+    }
+
+
 }

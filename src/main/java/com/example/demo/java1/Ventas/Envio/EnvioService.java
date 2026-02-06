@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class EnvioService {
@@ -40,5 +42,23 @@ public class EnvioService {
                 idEnvio
         );
     }
+    public List<Envio> listarTodos() {
+
+        String sql = """
+        SELECT * FROM envio
+        ORDER BY ID_Envio DESC
+    """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Envio e = new Envio();
+            e.setIdEnvio(rs.getInt("ID_Envio"));
+            e.setIdPedido(rs.getInt("ID_Pedido"));
+            e.setDireccion(rs.getString("direccion"));
+            e.setCiudad(rs.getString("ciudad"));
+            e.setEstado(rs.getString("estado"));
+            return e;
+        });
+    }
+
 }
 
