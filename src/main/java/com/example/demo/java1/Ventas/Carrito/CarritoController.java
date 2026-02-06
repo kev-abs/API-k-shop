@@ -1,48 +1,76 @@
 package com.example.demo.java1.Ventas.Carrito;
 
-
-import io.swagger.v3.oas.annotations.Operation;
+import com.example.demo.java1.Ventas.Carrito.dto.*;
+import com.example.demo.java1.Ventas.DetalleCarrito.DetalleCarrito;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@Tag(name = "Carrito", description = "Informacion temporal sobre la compra")
 @RequestMapping("/carrito")
 @CrossOrigin
+@Tag(name = "Carrito", description = "Información temporal sobre la compra")
 public class CarritoController {
 
     @Autowired
     private CarritoService carritoService;
 
+    // Agregar producto
     @PostMapping
-    @Operation(
-            summary = "Agregar producto al carrito",
-            description = "Permite agregar un producto al carrito de compras de un cliente de forma temporal"
-    )
-    public void agregar(@RequestBody Carrito carrito) {
-        carritoService.agregarAlCarrito(carrito);
+    public void agregar(@RequestBody AgregarProductoRequest req) {
+
+        carritoService.agregarProducto(
+                req.getIdCliente(),
+                req.getIdProducto(),
+                req.getCantidad()
+        );
     }
 
-    @GetMapping("/{idCliente}")
-    @Operation(
-            summary = "Obtener carrito del cliente",
-            description = "Permite consultar los productos agregados al carrito de un cliente mediante su identificador"
-    )
-    public List<Carrito> listar(@PathVariable int idCliente) {
-        return carritoService.obtenerCarrito(idCliente);
-    }
-
+    // Vaciar carrito
     @DeleteMapping("/{idCliente}")
-    @Operation(
-            summary = "Vaciar carrito del cliente",
-            description = "Permite eliminar todos los productos del carrito de compras de un cliente"
-    )
     public void vaciar(@PathVariable int idCliente) {
         carritoService.vaciarCarrito(idCliente);
     }
+
+    @PutMapping("/cantidad")
+    public void actualizarCantidad(@RequestBody ActualizarCantidadRequest req) {
+        carritoService.actualizarCantidad(
+                req.getIdCliente(),
+                req.getIdProducto(),
+                req.getCantidad()
+        );
+    }
+
+    @DeleteMapping("/producto")
+    public ResponseEntity<?> eliminarProducto(@RequestBody EliminarProductoRequest request) {
+        carritoService.eliminarProducto(
+                request.getIdCliente(),
+                request.getIdProducto()
+        );
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{idCliente}")
+    public CarritoResponse listar(@PathVariable int idCliente) {
+        return carritoService.obtenerCarritoCompleto(idCliente);
+    }
+    @PostMapping("/checkout")
+    public ResponseEntity<?> checkout(@RequestBody CheckoutRequest request) {
+
+        carritoService.checkout(
+                request.getIdCliente(),
+                request.getDireccion(),
+                request.getCiudad(),
+                request.getMetodoPago()
+        );
+
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }
 
