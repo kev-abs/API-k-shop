@@ -121,4 +121,23 @@ public class PedidoService {
         }, idPedido);
     }
 
+    public List<Pedido> listarTodos() {
+
+        String sql = """
+        SELECT * FROM pedido
+        ORDER BY fecha DESC
+    """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Pedido p = new Pedido();
+            p.setIdPedido(rs.getInt("ID_Pedido"));
+            p.setIdCliente(rs.getInt("ID_Cliente"));
+            p.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
+            p.setTotal(rs.getDouble("total"));
+            p.setEstado(rs.getString("estado"));
+            return p;
+        });
+    }
+
+
 }

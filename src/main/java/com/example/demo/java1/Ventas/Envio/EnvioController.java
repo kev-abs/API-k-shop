@@ -3,6 +3,8 @@ package com.example.demo.java1.Ventas.Envio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/envio")
@@ -26,5 +28,10 @@ public class EnvioController {
 
         envioService.cambiarEstado(idEnvio, estado);
     }
+    @GetMapping
+    public List<Envio> listarTodos() {
+        return envioService.listarTodos();
+    }
+
 }
 
