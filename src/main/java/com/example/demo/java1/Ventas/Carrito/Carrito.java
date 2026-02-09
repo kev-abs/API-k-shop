@@ -1,12 +1,10 @@
 package com.example.demo.java1.Ventas.Carrito;
 
-
 public class Carrito {
 
     private int idCarrito;
     private int idCliente;
-    private int idProducto;
-    private int cantidad;
+    private boolean activo;
 
     public int getIdCarrito() {
         return idCarrito;
@@ -24,20 +22,12 @@ public class Carrito {
         this.idCliente = idCliente;
     }
 
-    public int getIdProducto() {
-        return idProducto;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
 }
 
