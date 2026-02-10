@@ -5,7 +5,8 @@ import com.example.demo.java1.Ventas.DetalleCarrito.DetalleCarrito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import com.example.demo.java1.Ventas.Exceptions.StockException;
 import java.util.List;
 
 @Service
@@ -53,6 +54,35 @@ public class CarritoService {
 
         if (idCarrito == null) {
             idCarrito = crearCarrito(idCliente);
+        }
+// ======================
+// VALIDAR STOCK
+// ======================
+
+        Integer stockActual = jdbcTemplate.queryForObject(
+                "SELECT stock FROM producto WHERE ID_Producto = ?",
+                Integer.class,
+                idProducto
+        );
+
+        Integer cantidadActual = jdbcTemplate.queryForObject(
+                """
+                SELECT IFNULL(SUM(cantidad),0)
+                FROM detalle_carrito dc
+                JOIN carrito c ON dc.ID_Carrito = c.ID_Carrito
+                WHERE c.ID_Cliente = ? AND c.activo = 1 AND dc.ID_Producto = ?
+                """,
+                Integer.class,
+                idCliente,
+                idProducto
+        );
+
+        int totalSolicitado = cantidadActual + cantidad;
+
+        if (stockActual == null || totalSolicitado > stockActual) {
+            throw new RuntimeException(
+                    "Solo quedan " + stockActual + " unidades disponibles"
+            );
         }
 
         String sql = """
@@ -201,7 +231,7 @@ public class CarritoService {
 
         return new CarritoResponse(items, subtotal);
     }
-
+@Transactional
     public void checkout(int idCliente, String direccion, String ciudad, String metodoPago) {
 
         Integer idCarrito = obtenerCarritoActivo(idCliente);
@@ -211,8 +241,41 @@ public class CarritoService {
         }
 
         double total = calcularSubtotal(idCarrito);
+// Obtener productos del carrito
+    List<DetalleCarrito> items = obtenerCarrito(idCliente);
 
-        // Crear pedido
+    for (DetalleCarrito item : items) {
+
+        Integer stockActual = jdbcTemplate.queryForObject(
+                "SELECT stock FROM producto WHERE ID_Producto = ? FOR UPDATE",
+                Integer.class,
+                item.getIdProducto()
+        );
+
+        if (stockActual == null || stockActual <= 0) {
+
+            throw new RuntimeException(
+                    "El producto " + item.getIdProducto() + " ya no tiene stock"
+            );
+        }
+
+        if (item.getCantidad() > stockActual) {
+
+            throw new StockException(
+                    "Solo quedan " + stockActual + " unidades disponibles"
+            );
+        }
+
+            // DESCONTAR STOCK
+        jdbcTemplate.update(
+                "UPDATE producto SET stock = stock - ? WHERE ID_Producto = ?",
+                item.getCantidad(),
+                item.getIdProducto()
+        );
+    }
+
+
+    // Crear pedido
         jdbcTemplate.update(
                 "INSERT INTO pedido (ID_Cliente, total, estado) VALUES (?, ?, 'PENDIENTE')",
                 idCliente,

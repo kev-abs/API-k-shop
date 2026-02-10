@@ -60,15 +60,23 @@ public class CarritoController {
     @PostMapping("/checkout")
     public ResponseEntity<?> checkout(@RequestBody CheckoutRequest request) {
 
-        carritoService.checkout(
-                request.getIdCliente(),
-                request.getDireccion(),
-                request.getCiudad(),
-                request.getMetodoPago()
-        );
+        try {
 
-        return ResponseEntity.ok().build();
+            carritoService.checkout(
+                    request.getIdCliente(),
+                    request.getDireccion(),
+                    request.getCiudad(),
+                    request.getMetodoPago()
+            );
+
+            return ResponseEntity.ok().build();
+
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
+
 
 
 
