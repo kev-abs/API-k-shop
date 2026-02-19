@@ -9,7 +9,7 @@ public class DetalleCarrito {
     private String nombre;
     private double precio;
     private double total;
-
+    private  String imagen;
     public int getIdDetalle() {
         return idDetalle;
     }
@@ -64,5 +64,13 @@ public class DetalleCarrito {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getImagen() {
+        return imagen;
     }
 }

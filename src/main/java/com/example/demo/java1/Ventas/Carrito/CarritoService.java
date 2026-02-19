@@ -110,18 +110,20 @@ public class CarritoService {
         }
 
         String sql = """
-        SELECT 
-            dc.ID_Detalle,
-            dc.ID_Carrito,
-            dc.ID_Producto,
-            p.nombre,
-            p.precio,
-            dc.cantidad,
-            (dc.cantidad * p.precio) AS total
-        FROM detalle_carrito dc
-        JOIN producto p ON dc.ID_Producto = p.ID_Producto
-        WHERE dc.ID_Carrito = ?
-    """;
+    SELECT 
+        dc.ID_Detalle,
+        dc.ID_Carrito,
+        dc.ID_Producto,
+        p.nombre,
+        p.precio,
+        p.imagen,
+        dc.cantidad,
+        (dc.cantidad * p.precio) AS total
+    FROM detalle_carrito dc
+    JOIN producto p ON dc.ID_Producto = p.ID_Producto
+    WHERE dc.ID_Carrito = ?
+""";
+
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             DetalleCarrito d = new DetalleCarrito();
@@ -130,6 +132,7 @@ public class CarritoService {
             d.setIdProducto(rs.getInt("ID_Producto"));
             d.setNombre(rs.getString("nombre"));
             d.setPrecio(rs.getDouble("precio"));
+            d.setImagen(rs.getString("imagen"));
             d.setCantidad(rs.getInt("cantidad"));
             d.setTotal(rs.getDouble("total"));
             return d;
