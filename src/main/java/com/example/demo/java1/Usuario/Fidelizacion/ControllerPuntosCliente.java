@@ -1,10 +1,15 @@
 package com.example.demo.java1.Usuario.Fidelizacion;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.util.List;
 
+@SecurityRequirement(name = "BearerAuth")
+@Tag(name = "Puntos", description = "Operaciones sobre la tabla fidelizacion")
 @RestController
 @RequestMapping("/puntos")
 public class ControllerPuntosCliente {
@@ -13,11 +18,15 @@ public class ControllerPuntosCliente {
     private ServicePuntosCliente puntosService;
 
     @GetMapping("")
+    @Operation(summary = " Obtener puntos",
+            description = "Nos permite obtener informacion acerca de los puntos que ha acumulado el cliente")
     public List<String> listarPuntosClientes() {
         return puntosService.obtenerPuntosClientes();
     }
 
     @PostMapping("")
+    @Operation(summary = " Insertar puntos",
+            description = "Nos permite insertar nuevos puntos de fidelizacion")
     public String crearPuntosCliente(@RequestBody PuntosClienteDTO puntosCliente) {
         int filas = puntosService.insertarPuntosCliente(
                 puntosCliente.getIdCliente(),
@@ -27,6 +36,8 @@ public class ControllerPuntosCliente {
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = " Actualizar puntos",
+            description = "Nos permite actualizar los puntos de fidelizacion")
     public String actualizarPuntosCliente(@PathVariable int id, @RequestBody PuntosClienteDTO puntosCliente) {
         int filas = puntosService.actualizarPuntosCliente(
                 id,
@@ -37,6 +48,8 @@ public class ControllerPuntosCliente {
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = " Eliminar puntos",
+            description = "Nos permite eliminar los puntos de fidelizacion")
     public String eliminarPuntosCliente(@PathVariable int id) {
         int filas = puntosService.eliminarPuntosCliente(id);
         return (filas > 0) ? "Registro eliminado correctamente" : "Registro no encontrado";

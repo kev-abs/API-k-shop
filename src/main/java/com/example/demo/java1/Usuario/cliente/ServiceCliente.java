@@ -40,13 +40,12 @@ public class ServiceCliente {
                 "VALUES (?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql, nombre, correo, contrasenaEncriptada, documento, telefono);
     }
-    public int actualizarCliente(int id, String nombre, String correo, String contrasena,
-                                 LocalDate fechaRegistro, String estado,
+    public int actualizarCliente(int id, String nombre, String correo, String contrasena, String estado,
                                  String documento, String telefono) {
         String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
-        String sql = "UPDATE cliente SET Nombre=?, Correo=?, Contrasena=?, Fecha_Registro=?, Estado=?, Documento=?, Telefono=? " +
+        String sql = "UPDATE cliente SET Nombre=?, Correo=?, Contrasena=?, Estado=?, Documento=?, Telefono=? " +
                 "WHERE ID_Cliente=?";
-        return jdbcTemplate.update(sql, nombre, correo, contrasenaEncriptada, fechaRegistro, estado, documento, telefono, id);
+        return jdbcTemplate.update(sql, nombre, correo, contrasenaEncriptada, estado, documento, telefono, id);
     }
 
     public int eliminarCliente(int id) {

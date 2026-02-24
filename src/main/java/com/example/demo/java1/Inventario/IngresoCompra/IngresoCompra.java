@@ -5,15 +5,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 
 public class IngresoCompra {
-    private int ID_Ingreso;
-    @JsonProperty("ID_Empleado")
-    private int ID_Empleado;
-    @JsonProperty("ID_Proveedor")
-    private int ID_Proveedor;
-    private String Fecha_Ingreso;
-    private String Total;
 
-    public int getID_Ingreso_Compra() {
+    private int ID_Ingreso;
+
+    @JsonProperty("ID_Empleado")
+    private int idEmpleado;
+
+    @JsonProperty("ID_Proveedor")
+    private int idProveedor;
+
+    @JsonProperty("Fecha_Ingreso")
+    private String fechaIngreso;
+
+    @JsonProperty("Total")
+    private String total;
+
+    // getters y setters
+
+    public int getID_Ingreso() {
         return ID_Ingreso;
     }
 
@@ -21,35 +30,35 @@ public class IngresoCompra {
         this.ID_Ingreso = ID_Ingreso;
     }
 
-    public int getID_Empleado() {
-        return ID_Empleado;
+    public int getIdEmpleado() {
+        return idEmpleado;
     }
 
-    public void setID_Empleado(int ID_Empleado) {
-        this.ID_Empleado = ID_Empleado;
+    public void setIdEmpleado(int idEmpleado) {
+        this.idEmpleado = idEmpleado;
     }
 
-    public int getID_Proveedor() {
-        return ID_Proveedor;
+    public int getIdProveedor() {
+        return idProveedor;
     }
 
-    public void setID_Proveedor(int ID_Proveedor) {
-        this.ID_Proveedor = ID_Proveedor;
+    public void setIdProveedor(int idProveedor) {
+        this.idProveedor = idProveedor;
     }
 
-    public String getFecha_Ingreso() {
-        return Fecha_Ingreso;
+    public String getFechaIngreso() {
+        return fechaIngreso;
     }
 
-    public void setFecha_Ingreso(String fecha_Ingreso) {
-        Fecha_Ingreso = fecha_Ingreso;
+    public void setFechaIngreso(String fechaIngreso) {
+        this.fechaIngreso = fechaIngreso;
     }
 
     public String getTotal() {
-        return Total;
+        return total;
     }
 
     public void setTotal(String total) {
-        Total = total;
+        this.total = total;
     }
 }

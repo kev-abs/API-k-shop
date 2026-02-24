@@ -69,7 +69,7 @@ public class ConexionServiceProveedor {
 
 
     public boolean eliminarProveedor(int id) {
-        String sql = "DELETE FROM proveedor cupon WHERE ID_Proveedor = ?";
+        String sql = "DELETE FROM proveedor WHERE ID_Proveedor = ?";
         int filasAfectadas = jdbcTemplate.update(sql, id);
         return filasAfectadas > 0;
     }

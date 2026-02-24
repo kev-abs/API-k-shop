@@ -20,6 +20,7 @@ public class ConexionServiceCupon {
         String sql = "SELECT * FROM cupon";
         return jdbcTemplate.query(sql, new RowMapper<Cupon>() {
             @Override
+
             public Cupon mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Cupon c = new Cupon();
                 c.setID_Cupon(rs.getInt("ID_Cupon"));
@@ -35,7 +36,7 @@ public class ConexionServiceCupon {
             throw new IllegalArgumentException("El código del cupón no puede estar vacío");
         }
 
-        String sql = "INSERT INTO cupon (Codigo, Descuento, Fecha_Expiracion) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO cupon (Codigo, Descuento, fecha_Expiracion) VALUES (?, ?, ?)";
         jdbcTemplate.update(sql,
                 cupon.getCodigo(),
                 cupon.getDescuento(),

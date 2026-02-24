@@ -1,14 +1,19 @@
 package com.example.demo.java1.Usuario.empleado;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SecurityRequirement(name = "BearerAuth")
+@Tag(name = "Empleados", description = "Operaciones sobre la tabla empleado")
 @CrossOrigin(origins = "*")
 @RestController
 public class ControllerEmpleado {
@@ -18,11 +23,15 @@ public class ControllerEmpleado {
 
     // Listar empleados
     @GetMapping("/empleados")
+    @Operation(summary = " Obtener empleados",
+            description = "Nos permite obtener datos de los empleados ya registrados")
     public List<EmpleadoDTO> listarEmpleados() {
         return conexionService.obtenerEmpleados();
     }
     // Obtener un empleado por ID
     @GetMapping("/{id}")
+    @Operation(summary = " Obtener empleados por identificar único",
+            description = "Nos permite obtener datos de un empleado en especifico")
     public EmpleadoDTO obtenerEmpleado(@PathVariable("id") BigInteger id) {
         EmpleadoDTO empleado = conexionService.obtenerEmpleadoPorId(id);
         if (empleado == null) {
@@ -33,6 +42,8 @@ public class ControllerEmpleado {
 
     // Crear empleado
     @PostMapping("/empleados")
+    @Operation(summary = " Insertar empleados",
+            description = "Nos permite registrar nuevos empleados")
     public Map<String, String> crearEmpleado(@RequestBody EmpleadoDTO empleado) {
         Map<String, String> respuesta = new HashMap<>();
 
@@ -55,6 +66,8 @@ public class ControllerEmpleado {
 
     // Actualizar empleado
     @PutMapping("/empleados/{id}")
+    @Operation(summary = " Actualizar empleados",
+            description = "Nos permite actualizar datos de los empleados ya registrados")
     public Map<String, String> actualizarEmpleado(@PathVariable int id, @RequestBody EmpleadoDTO empleado) {
         int filas = conexionService.actualizarEmpleado(id, empleado.getNombre(), empleado.getCargo(), empleado.getCorreo(), empleado.getContrasena(), empleado.getFechaContratacion(), empleado.getEstado());
         Map<String, String> respuesta = new HashMap<>();
@@ -65,10 +78,14 @@ public class ControllerEmpleado {
 
     // Eliminar empleado
     @DeleteMapping("/empleados/{id}")
-    public String eliminarEmpleado(@PathVariable int id) {
+    @Operation(summary = " Eliminar empleados",
+            description = "Nos permite eliminar datos de los empleados")
+    public Map<String, String> eliminarEmpleado(@PathVariable int id) {
         int filas = conexionService.eliminarEmpleado(id);
-        return (filas > 0)
-                ? "Empleado eliminado correctamente"
-                : "Empleado no encontrado";
+        if (filas > 0) {
+            return Map.of("message", "Cliente eliminado correctamente");
+        } else {
+            return Map.of("message", "Cliente no encontrado");
+        }
     }
 }

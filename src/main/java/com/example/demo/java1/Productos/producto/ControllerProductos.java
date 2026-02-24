@@ -4,6 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 
 import java.io.File;
 import java.io.IOException;
@@ -11,12 +14,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
-
+@Tag(name = "Productos", description = "Operaciones sobre la tabla productos")
 @RestController
 @RequestMapping("/productos")
+
 @CrossOrigin(origins = "*")
 public class ControllerProductos {
+
 
     @Autowired
     private ServiceProductos conexionService;
@@ -28,15 +34,23 @@ public class ControllerProductos {
         File directorio = new File(uploadDir);
         if (!directorio.exists()) directorio.mkdirs();
 
-        String nombreImagen = UUID.randomUUID() + "_" + imagen.getOriginalFilename();
-        Path ruta = Paths.get(uploadDir + nombreImagen);
+        // Obtener extensión del archivo original
+        String original = imagen.getOriginalFilename();
+        String extension = "";
+        int punto = original.lastIndexOf(".");
+        if (punto != -1) {
+            extension = original.substring(punto); // .jpg, .png, etc.
+        }
 
+        // Generar nombre corto
+        String nombreCorto = UUID.randomUUID().toString().substring(0, 8) + extension;
+
+        Path ruta = Paths.get(uploadDir + nombreCorto);
         Files.copy(imagen.getInputStream(), ruta);
 
-        return nombreImagen;
+        return nombreCorto;
     }
 
-    // ==========  ELIMINAR IMAGEN  ==========
     private void eliminarImagenExistente(String nombreImagen) {
         if (nombreImagen == null) return;
 
@@ -46,8 +60,10 @@ public class ControllerProductos {
         } catch (IOException ignored) {}
     }
 
-    // ==========  INSERTAR PRODUCTO  ==========
+
     @PostMapping("/insertar")
+    @Operation(summary = " Ingresar Productos",
+            description = "Permite ingresar productos nuevos al sistema")
     public ResponseEntity<?> insertarProducto(
             @RequestParam("nombre") String nombre,
             @RequestParam("descripcion") String descripcion,
@@ -55,10 +71,14 @@ public class ControllerProductos {
             @RequestParam("stock") int stock,
             @RequestParam("idProveedor") int idProveedor,
             @RequestParam("estado") String estado,
-            @RequestParam("imagen") MultipartFile imagen
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen
     ) {
         try {
-            String nombreImagen = guardarImagen(imagen);
+            String nombreImagen = null;
+
+            if (imagen != null && !imagen.isEmpty()) {
+                nombreImagen = guardarImagen(imagen);
+            }
 
             Producto nuevo = new Producto();
             nuevo.setNombre(nombre);
@@ -71,22 +91,53 @@ public class ControllerProductos {
 
             conexionService.insertarProducto(nuevo);
 
-            return ResponseEntity.ok("Producto insertado con éxito");
+            return ResponseEntity.ok(Map.of(
+                    "success", true,
+                    "idProducto", nuevo.getID_Producto()
+            ));
+
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error al insertar: " + e.getMessage());
         }
     }
 
-    // ========== LISTAR PRODUCTOS ==========
     @GetMapping
+    @Operation(summary = "Obtener productos",
+            description = "Devuelve una lista con todos los productos almacenados en la tabla productos")
     public List<Producto> listarProductos() {
         return conexionService.obtenerProductos();
     }
 
-    // ========== ACTUALIZAR PRODUCTO ==========
-    @PutMapping("/actualizar/{id}")
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtener Productos por id",
+            description = "Devuelve una lista con el productos que se elija por id")
+    public ResponseEntity<?> obtenerProductoPorId(@PathVariable int id) {
+        Producto p = conexionService.obtenerProductoPorId(id);
+        if (p == null)
+            return ResponseEntity.status(404).body("Producto no encontrado");
+
+        return ResponseEntity.ok(p);
+    }
+    @GetMapping("/filtrar")
+    public List<Producto> filtrarProductos(
+
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) Integer idCategoria,
+            @RequestParam(required = false) Double precioMin,
+            @RequestParam(required = false) Double precioMax
+
+    ) {
+
+        return conexionService.filtrarProductos(nombre, idCategoria, precioMin, precioMax);
+
+    }
+
+
+    @PutMapping("actualizar/{id}")
+    @Operation(summary = "Actualizar Productos",
+            description = "Permite actualizar los datos almacenados en la tabla productos")
     public ResponseEntity<?> actualizarProducto(
             @PathVariable int id,
             @RequestParam("nombre") String nombre,
@@ -117,16 +168,18 @@ public class ControllerProductos {
 
             conexionService.actualizarProducto(p, id);
 
-            return ResponseEntity.ok("Producto actualizado");
+            return ResponseEntity.ok("Producto actualizado con éxito");
 
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(500).body("Error: " + e.getMessage());
+            return ResponseEntity.status(500).body("Error al actualizar: " + e.getMessage());
         }
     }
 
-    // ========== ELIMINAR PRODUCTO ==========
-    @DeleteMapping("/eliminar/{id}")
+
+    @DeleteMapping("eliminar/{id}")
+    @Operation(summary = "Eliminar Productos",
+            description = "Permite eliminar datos de la tabla de productos")
     public ResponseEntity<?> eliminarProducto(@PathVariable int id) {
 
         Producto p = conexionService.obtenerProductoPorId(id);
@@ -136,6 +189,10 @@ public class ControllerProductos {
         eliminarImagenExistente(p.getImagen());
         conexionService.eliminarProducto(id);
 
-        return ResponseEntity.ok("Producto eliminado");
+        return ResponseEntity.ok("Producto eliminado con éxito");
     }
+
+
+
 }
+
