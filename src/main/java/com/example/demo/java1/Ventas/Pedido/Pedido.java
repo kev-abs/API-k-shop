@@ -1,50 +1,107 @@
 package com.example.demo.java1.Ventas.Pedido;
-import java.sql.Date;
+
+import java.time.LocalDateTime;
 
 public class Pedido {
-    private int ID_Pedido;
-    private int ID_Cliente;
-    private Date Fecha_Pedido;
-    private String Estado;
-    private double Total;
 
-    public int getID_Pedido() {
-        return ID_Pedido;
+    private int idPedido;
+    private int idCliente;
+    private LocalDateTime fecha;
+    private double total;
+    private String estado;
+    private String estadoPago;
+    private String estadoEnvio;
+    private String metodoPago;
+    private String direccion;
+    private String imagen;
+    private String ciudad;
+
+
+    public String getImagen() {
+        return imagen;
     }
 
-    public void setID_Pedido(int ID_Pedido) {
-        this.ID_Pedido = ID_Pedido;
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
+    public int getIdPedido() {
+        return idPedido;
     }
 
-    public int getID_Cliente() {
-        return ID_Cliente;
+    public void setIdPedido(int idPedido) {
+        this.idPedido = idPedido;
     }
 
-    public void setID_Cliente(int ID_Cliente) {
-        this.ID_Cliente = ID_Cliente;
+    public int getIdCliente() {
+        return idCliente;
     }
 
-    public Date getFecha_Pedido() {
-        return Fecha_Pedido;
+    public void setIdCliente(int idCliente) {
+        this.idCliente = idCliente;
     }
 
-    public void setFecha_Pedido(Date Fecha_Pedido) {
-        this.Fecha_Pedido = Fecha_Pedido;
+    public LocalDateTime getFecha() {
+        return fecha;
     }
 
-    public String getEstado() {
-        return Estado;
-    }
-
-    public void setEstado(String Estado) {
-        this.Estado = Estado;
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha;
     }
 
     public double getTotal() {
-        return Total;
+        return total;
     }
 
-    public void setTotal(double Total) {
-        this.Total = Total;
+    public void setTotal(double total) {
+        this.total = total;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getEstadoPago() {
+        return estadoPago;
+    }
+
+    public void setEstadoPago(String estadoPago) {
+        this.estadoPago = estadoPago;
+    }
+
+    public String getEstadoEnvio() {
+        return estadoEnvio;
+    }
+
+    public void setEstadoEnvio(String estadoEnvio) {
+        this.estadoEnvio = estadoEnvio;
+    }
+
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 }
+

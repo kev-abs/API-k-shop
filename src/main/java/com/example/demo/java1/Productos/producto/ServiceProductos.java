@@ -3,8 +3,13 @@ package com.example.demo.java1.Productos.producto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Service;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -38,20 +43,80 @@ public class ServiceProductos {
         });
     }
 
+    public List<Producto> filtrarProductos(String nombre, Integer idCategoria,
+                                           Double precioMin, Double precioMax) {
+
+        StringBuilder sql = new StringBuilder("SELECT p.* FROM producto p WHERE 1=1");
+
+        List<Object> params = new ArrayList<>();
+
+        if(nombre != null && !nombre.isEmpty()){
+            sql.append(" AND Nombre LIKE ?");
+            params.add("%" + nombre + "%");
+        }
+
+        if(precioMin != null){
+            sql.append(" AND Precio >= ?");
+            params.add(precioMin);
+        }
+        if(idCategoria != null){
+            sql.append(" AND p.ID_Producto IN (SELECT pc.ID_Producto FROM producto_categoria pc WHERE pc.ID_Categoria = ?)");
+            params.add(idCategoria);
+        }
+
+
+        if(precioMax != null){
+            sql.append(" AND Precio <= ?");
+            params.add(precioMax);
+        }
+
+        return jdbcTemplate.query(
+
+                sql.toString(),
+                params.toArray(),
+
+                (rs, rowNum) -> {
+
+                    Producto p = new Producto();
+
+                    p.setID_Producto(rs.getInt("ID_Producto"));
+                    p.setNombre(rs.getString("Nombre"));
+                    p.setDescripcion(rs.getString("Descripcion"));
+                    p.setPrecio(rs.getDouble("Precio"));
+                    p.setStock(rs.getInt("Stock"));
+                    p.setID_Proveedor(rs.getInt("ID_Proveedor"));
+                    p.setImagen(rs.getString("Imagen"));
+                    p.setEstado(rs.getString("Estado"));
+
+                    return p;
+                }
+        );
+    }
+
 
     // Insertar producto (sin imagen binaria, solo nombre)
     public void insertarProducto(Producto producto) {
+
         String sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Proveedor, Imagen, Estado) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                producto.getNombre(),
-                producto.getDescripcion(),
-                producto.getPrecio(),
-                producto.getStock(),
-                producto.getID_Proveedor(),
-                producto.getImagen(),
-                producto.getEstado()
-        );
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, producto.getNombre());
+            ps.setString(2, producto.getDescripcion());
+            ps.setDouble(3, producto.getPrecio());
+            ps.setInt(4, producto.getStock());
+            ps.setInt(5, producto.getID_Proveedor());
+            ps.setString(6, producto.getImagen());
+            ps.setString(7, producto.getEstado());
+            return ps;
+        }, keyHolder);
+
+        if (keyHolder.getKey() != null) {
+            producto.setID_Producto(keyHolder.getKey().intValue());
+        }
     }
 
     // Actualizar producto

@@ -1,25 +1,35 @@
 package com.example.demo.java1.Ventas.DetallePedido;
 
 public class DetallePedido {
-    private int ID_Detalle;
-    private int ID_Pedido;
-    private int ID_Producto;
-    private int Cantidad;
-    private double Precio_Unitario;
 
-    // Getters y setters
-    public int getID_Detalle() { return ID_Detalle; }
-    public void setID_Detalle(int ID_Detalle) { this.ID_Detalle = ID_Detalle; }
+    private int idProducto;
+    private String nombre;
+    private int cantidad;
+    private double precioUnitario;
+    private double total;
 
-    public int getID_Pedido() { return ID_Pedido; }
-    public void setID_Pedido(int ID_Pedido) { this.ID_Pedido = ID_Pedido; }
+    private String imagen;
 
-    public int getID_Producto() { return ID_Producto; }
-    public void setID_Producto(int ID_Producto) { this.ID_Producto = ID_Producto; }
+    public String getImagen() {
+        return imagen;
+    }
 
-    public int getCantidad() { return Cantidad; }
-    public void setCantidad(int cantidad) { Cantidad = cantidad; }
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
 
-    public double getPrecio_Unitario() { return Precio_Unitario; }
-    public void setPrecio_Unitario(double precio_Unitario) { Precio_Unitario = precio_Unitario; }
+    public int getIdProducto() { return idProducto; }
+    public void setIdProducto(int idProducto) { this.idProducto = idProducto; }
+
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
+
+    public int getCantidad() { return cantidad; }
+    public void setCantidad(int cantidad) { this.cantidad = cantidad; }
+
+    public double getPrecioUnitario() { return precioUnitario; }
+    public void setPrecioUnitario(double precioUnitario) { this.precioUnitario = precioUnitario; }
+
+    public double getTotal() { return total; }
+    public void setTotal(double total) { this.total = total; }
 }
