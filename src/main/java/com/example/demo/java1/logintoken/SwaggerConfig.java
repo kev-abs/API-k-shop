@@ -7,17 +7,20 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 @Configuration
 public class SwaggerConfig {
 
-    @Bean
-    public OpenAPI apiDoc(){
+    @Bean(name = "apiDocLoginToken")
+    @Primary
+    public OpenAPI apiDocLoginToken() {
         return new OpenAPI()
                 .info(new Info()
                         .title("API de Usuarios con JWT")
                         .description("Documentación generada automáticamente para demostrar Swagger")
-                        .version("1.0"))
+                        .version("1.0")
+                )
                 .addSecurityItem(new SecurityRequirement().addList("BearerAuth"))
                 .components(new Components()
                         .addSecuritySchemes("BearerAuth",
@@ -26,6 +29,7 @@ public class SwaggerConfig {
                                         .type(SecurityScheme.Type.HTTP)
                                         .scheme("bearer")
                                         .bearerFormat("JWT")
-                        ));
+                        )
+                );
     }
 }
