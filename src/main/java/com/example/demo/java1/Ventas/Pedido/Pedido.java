@@ -1,12 +1,16 @@
 package com.example.demo.java1.Ventas.Pedido;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
+
 
 public class Pedido {
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime fecha;
     private int idPedido;
     private int idCliente;
-    private LocalDateTime fecha;
     private double total;
     private String estado;
     private String estadoPago;
