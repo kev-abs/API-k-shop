@@ -17,10 +17,17 @@ public class Pedido {
     private String estadoEnvio;
     private String metodoPago;
     private String direccion;
+    private String imagen;
     private String ciudad;
 
 
+    public String getImagen() {
+        return imagen;
+    }
 
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
+    }
     public int getIdPedido() {
         return idPedido;
     }

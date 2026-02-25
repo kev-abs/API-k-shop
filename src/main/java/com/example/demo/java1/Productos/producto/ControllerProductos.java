@@ -120,6 +120,20 @@ public class ControllerProductos {
 
         return ResponseEntity.ok(p);
     }
+    @GetMapping("/filtrar")
+    public List<Producto> filtrarProductos(
+
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) Integer idCategoria,
+            @RequestParam(required = false) Double precioMin,
+            @RequestParam(required = false) Double precioMax
+
+    ) {
+
+        return conexionService.filtrarProductos(nombre, idCategoria, precioMin, precioMax);
+
+    }
+
 
     @PutMapping("actualizar/{id}")
     @Operation(summary = "Actualizar Productos",
@@ -177,5 +191,8 @@ public class ControllerProductos {
 
         return ResponseEntity.ok("Producto eliminado con éxito");
     }
+
+
+
 }
 

@@ -14,7 +14,7 @@ public class ConexionControllerProveedor {
 
 
     @GetMapping("/proveedor")
-    public List<String> obtenerProveedor() {
+    public List<Proveedor> obtenerProveedor() {
         return conexionServiceProveedor.obtenerProveedor();
     }
 

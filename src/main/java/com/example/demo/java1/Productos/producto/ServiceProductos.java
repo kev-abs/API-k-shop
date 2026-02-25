@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -40,6 +41,56 @@ public class ServiceProductos {
             p.setEstado(rs.getString("Estado"));
             return p;
         });
+    }
+
+    public List<Producto> filtrarProductos(String nombre, Integer idCategoria,
+                                           Double precioMin, Double precioMax) {
+
+        StringBuilder sql = new StringBuilder("SELECT p.* FROM producto p WHERE 1=1");
+
+        List<Object> params = new ArrayList<>();
+
+        if(nombre != null && !nombre.isEmpty()){
+            sql.append(" AND Nombre LIKE ?");
+            params.add("%" + nombre + "%");
+        }
+
+        if(precioMin != null){
+            sql.append(" AND Precio >= ?");
+            params.add(precioMin);
+        }
+        if(idCategoria != null){
+            sql.append(" AND p.ID_Producto IN (SELECT pc.ID_Producto FROM producto_categoria pc WHERE pc.ID_Categoria = ?)");
+            params.add(idCategoria);
+        }
+
+
+        if(precioMax != null){
+            sql.append(" AND Precio <= ?");
+            params.add(precioMax);
+        }
+
+        return jdbcTemplate.query(
+
+                sql.toString(),
+                params.toArray(),
+
+                (rs, rowNum) -> {
+
+                    Producto p = new Producto();
+
+                    p.setID_Producto(rs.getInt("ID_Producto"));
+                    p.setNombre(rs.getString("Nombre"));
+                    p.setDescripcion(rs.getString("Descripcion"));
+                    p.setPrecio(rs.getDouble("Precio"));
+                    p.setStock(rs.getInt("Stock"));
+                    p.setID_Proveedor(rs.getInt("ID_Proveedor"));
+                    p.setImagen(rs.getString("Imagen"));
+                    p.setEstado(rs.getString("Estado"));
+
+                    return p;
+                }
+        );
     }
 
 
