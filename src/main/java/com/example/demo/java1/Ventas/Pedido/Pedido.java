@@ -19,8 +19,24 @@ public class Pedido {
     private String direccion;
     private String imagen;
     private String ciudad;
+    private int idPago;
+    private int idEnvio;
 
+    public int getIdEnvio() {
+        return idEnvio;
+    }
 
+    public void setIdEnvio(int idEnvio) {
+        this.idEnvio = idEnvio;
+    }
+
+    public int getIdPago() {
+        return idPago;
+    }
+
+    public void setIdPago(int idPago) {
+        this.idPago = idPago;
+    }
     public String getImagen() {
         return imagen;
     }
