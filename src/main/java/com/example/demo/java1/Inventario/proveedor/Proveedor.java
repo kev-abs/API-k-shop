@@ -4,7 +4,7 @@ public class Proveedor {
     private int ID_Proveedor;
     private String Nombre_Empresa;
     private String Contacto;
-    private long Telefono;
+    private String Telefono;
     private String Correo;
     private String Direccion;
 
@@ -27,11 +27,11 @@ public class Proveedor {
         Contacto = contacto;
     }
 
-    public long getTelefono() {
+    public String getTelefono() {
         return Telefono;
     }
 
-    public void setTelefono(long telefono) {
+    public void setTelefono(String telefono) {
         Telefono = telefono;
     }
 

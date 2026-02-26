@@ -89,11 +89,21 @@ public class PedidoService {
 
     // Cambiar estado
     public void cambiarEstado(int idPedido, String estado) {
+
+        // Actualizar estado del pedido
         jdbcTemplate.update(
                 "UPDATE pedido SET estado = ? WHERE ID_Pedido = ?",
                 estado,
                 idPedido
         );
+
+        // Si el estado es PAGADO, actualizar también pago
+        if (estado.equalsIgnoreCase("PAGADO")) {
+            jdbcTemplate.update(
+                    "UPDATE pago SET estado = 'APROBADO' WHERE ID_Pedido = ?",
+                    idPedido
+            );
+        }
     }
     // Obtener productos del pedido
     public List<DetallePedido> obtenerDetallePedido(int idPedido) {
@@ -124,18 +134,39 @@ public class PedidoService {
     public List<Pedido> listarTodos() {
 
         String sql = """
-        SELECT * FROM pedido
-        ORDER BY fecha DESC
+        SELECT 
+            p.ID_Pedido,
+            p.ID_Cliente,
+            p.fecha,
+            p.total,
+            p.estado AS estado_pedido,
+            pa.ID_Pago,
+            pa.estado AS estado_pago,
+            e.ID_Envio,
+            e.estado AS estado_envio
+        FROM pedido p
+        LEFT JOIN pago pa ON p.ID_Pedido = pa.ID_Pedido
+        LEFT JOIN envio e ON p.ID_Pedido = e.ID_Pedido
+        ORDER BY p.ID_Pedido ASC
     """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Pedido p = new Pedido();
-            p.setIdPedido(rs.getInt("ID_Pedido"));
-            p.setIdCliente(rs.getInt("ID_Cliente"));
-            p.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
-            p.setTotal(rs.getDouble("total"));
-            p.setEstado(rs.getString("estado"));
-            return p;
+            Pedido pedido = new Pedido();
+
+            pedido.setIdPedido(rs.getInt("ID_Pedido"));
+            pedido.setIdCliente(rs.getInt("ID_Cliente"));
+            pedido.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
+            pedido.setTotal(rs.getDouble("total"));
+
+            pedido.setEstado(rs.getString("estado_pedido"));
+
+            pedido.setIdPago(rs.getInt("ID_Pago"));
+            pedido.setEstadoPago(rs.getString("estado_pago"));
+
+            pedido.setIdEnvio(rs.getInt("ID_Envio"));
+            pedido.setEstadoEnvio(rs.getString("estado_envio"));
+
+            return pedido;
         });
     }
 

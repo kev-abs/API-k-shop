@@ -20,7 +20,6 @@ public class ConexionServiceProveedor {
         String sql = "SELECT * FROM proveedor";
 
         return jdbcTemplate.query(sql, new RowMapper<Proveedor>() {
-
             @Override
             public Proveedor mapRow(ResultSet rs, int rowNum) throws SQLException {
 
@@ -29,13 +28,14 @@ public class ConexionServiceProveedor {
                 proveedor.setID_Proveedor(rs.getInt("ID_Proveedor"));
                 proveedor.setNombre_Empresa(rs.getString("Nombre_Empresa"));
                 proveedor.setContacto(rs.getString("Contacto"));
-                proveedor.setTelefono(rs.getLong("Telefono"));
+                proveedor.setTelefono(rs.getString("Telefono"));
                 proveedor.setCorreo(rs.getString("Correo"));
                 proveedor.setDireccion(rs.getString("Direccion"));
 
                 return proveedor;
             }
         });
+
     }
 
 
