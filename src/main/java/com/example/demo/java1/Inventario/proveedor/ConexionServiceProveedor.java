@@ -15,20 +15,27 @@ public class ConexionServiceProveedor {
     private JdbcTemplate jdbcTemplate;
 
 
-    public List<String> obtenerProveedor() {
+    public List<Proveedor> obtenerProveedor() {
+
         String sql = "SELECT * FROM proveedor";
-        return jdbcTemplate.query(sql, new RowMapper<String>() {
+
+        return jdbcTemplate.query(sql, new RowMapper<Proveedor>() {
+
             @Override
-            public String mapRow(ResultSet rs, int rowNum) throws SQLException {
-                return rs.getString("ID_Proveedor") + " " +
-                        rs.getString("Nombre_Empresa") + " " +
-                        rs.getString("Contacto") + " "+
-                        rs.getString("Telefono") + " "+
-                        rs.getString("Correo") + " "+
-                        rs.getString("Direccion");
+            public Proveedor mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+                Proveedor proveedor = new Proveedor();
+
+                proveedor.setID_Proveedor(rs.getInt("ID_Proveedor"));
+                proveedor.setNombre_Empresa(rs.getString("Nombre_Empresa"));
+                proveedor.setContacto(rs.getString("Contacto"));
+                proveedor.setTelefono(rs.getLong("Telefono"));
+                proveedor.setCorreo(rs.getString("Correo"));
+                proveedor.setDireccion(rs.getString("Direccion"));
+
+                return proveedor;
             }
         });
-
     }
 
 

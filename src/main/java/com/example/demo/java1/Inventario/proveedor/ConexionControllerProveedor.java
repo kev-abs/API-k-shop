@@ -14,11 +14,9 @@ public class ConexionControllerProveedor {
 
 
     @GetMapping("/proveedor")
-    public List<String> obtenerProveedor() {
+    public List<Proveedor> obtenerProveedor() {
         return conexionServiceProveedor.obtenerProveedor();
     }
-
-
 
     @PostMapping("/proveedor")
     public String agregarProveedor(@RequestBody Proveedor proveedor) {

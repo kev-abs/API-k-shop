@@ -65,4 +65,21 @@ public class CategoriaRepository {
 
         return new ArrayList<>(mapa.values());
     }
+    public Categoria crearCategoria(Categoria categoria) {
+        String sql = "INSERT INTO categoria (nombre) VALUES (?)";
+        jdbc.update(sql, categoria.getNombre());
+        return categoria;
+    }
+
+    public Categoria actualizarCategoria(int id, Categoria categoria) {
+        String sql = "UPDATE categoria SET nombre = ? WHERE id_categoria = ?";
+        jdbc.update(sql, categoria.getNombre(), id);
+        categoria.setIdCategoria(id);
+        return categoria;
+    }
+
+    public void eliminarCategoria(int id) {
+        String sql = "DELETE FROM categoria WHERE id_categoria = ?";
+        jdbc.update(sql, id);
+    }
 }

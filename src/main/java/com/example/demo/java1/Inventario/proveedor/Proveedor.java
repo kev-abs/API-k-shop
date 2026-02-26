@@ -11,11 +11,6 @@ public class Proveedor {
     public int getID_Proveedor() {
         return ID_Proveedor;
     }
-
-    public void setID_Proveedor(int ID_Proveedor) {
-        this.ID_Proveedor = ID_Proveedor;
-    }
-
     public String getNombre_Empresa() {
         return Nombre_Empresa;
     }
@@ -55,4 +50,7 @@ public class Proveedor {
     public void setDireccion(String direccion) {
         Direccion = direccion;
     }
+
+    public void setID_Proveedor(int ID_Proveedor){
+        this.ID_Proveedor = ID_Proveedor;}
 }

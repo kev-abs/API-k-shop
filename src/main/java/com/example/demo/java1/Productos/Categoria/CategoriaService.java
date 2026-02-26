@@ -16,5 +16,16 @@ public class CategoriaService {
     public List<CategoriaConProductos> listarCategoriasConProductos() {
         return categoriaRepository.obtenerCategoriasConProductos();
     }
+    public Categoria crearCategoria(Categoria categoria) {
+        return categoriaRepository.crearCategoria(categoria);
+    }
+
+    public Categoria actualizarCategoria(int id, Categoria categoria) {
+        return categoriaRepository.actualizarCategoria(id, categoria);
+    }
+
+    public void eliminarCategoria(int id) {
+        categoriaRepository.eliminarCategoria(id);
+    }
 }
 

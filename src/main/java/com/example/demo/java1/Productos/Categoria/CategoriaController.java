@@ -2,10 +2,7 @@ package com.example.demo.java1.Productos.Categoria;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -32,5 +29,32 @@ public class CategoriaController {
         return ResponseEntity.ok(
                 categoriaService.listarCategoriasConProductos()
         );
+    }
+    @PostMapping("/categorias")
+    @Operation(summary = "Crear Categoria",
+            description = "Permite crear una nueva categoria")
+    public ResponseEntity<?> crearCategoria(@RequestBody Categoria categoria) {
+        if (categoria.getNombre() == null || categoria.getNombre().isBlank()) {
+            return ResponseEntity.badRequest().body("El nombre es obligatorio");
+        }
+        return ResponseEntity.ok(categoriaService.crearCategoria(categoria));
+    }
+
+    @PutMapping("/categorias/{id}")
+    @Operation(summary = "Actualizar Categoria",
+            description = "Permite actualizar una categoria existente")
+    public ResponseEntity<?> actualizarCategoria(@PathVariable int id, @RequestBody Categoria categoria) {
+        if (categoria.getNombre() == null || categoria.getNombre().isBlank()) {
+            return ResponseEntity.badRequest().body("El nombre es obligatorio");
+        }
+        return ResponseEntity.ok(categoriaService.actualizarCategoria(id, categoria));
+    }
+
+    @DeleteMapping("/categorias/{id}")
+    @Operation(summary = "Eliminar Categoria",
+            description = "Permite eliminar una categoria")
+    public ResponseEntity<?> eliminarCategoria(@PathVariable int id) {
+        categoriaService.eliminarCategoria(id);
+        return ResponseEntity.ok("Categoría eliminada correctamente");
     }
 }
