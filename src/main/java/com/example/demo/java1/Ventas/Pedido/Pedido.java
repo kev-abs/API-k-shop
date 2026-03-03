@@ -21,6 +21,15 @@ public class Pedido {
     private String ciudad;
     private int idPago;
     private int idEnvio;
+    private String nombreCliente;
+
+    public String getNombreCliente() {
+        return nombreCliente;
+    }
+
+    public void setNombreCliente(String nombreCliente) {
+        this.nombreCliente = nombreCliente;
+    }
 
     public int getIdEnvio() {
         return idEnvio;
