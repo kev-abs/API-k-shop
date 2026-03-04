@@ -38,13 +38,14 @@ public class ServiceProductos {
             p.setStock(rs.getInt("Stock"));
             p.setID_Proveedor(rs.getInt("ID_Proveedor"));
             p.setImagen(rs.getString("Imagen"));
+            p.setGenero(rs.getString("Genero"));
             p.setEstado(rs.getString("Estado"));
             return p;
         });
     }
 
     public List<Producto> filtrarProductos(String nombre, Integer idCategoria,
-                                           Double precioMin, Double precioMax) {
+                                           Double precioMin, Double precioMax, String genero) {
 
         StringBuilder sql = new StringBuilder("SELECT p.* FROM producto p WHERE 1=1");
 
@@ -62,6 +63,10 @@ public class ServiceProductos {
         if(idCategoria != null){
             sql.append(" AND p.ID_Producto IN (SELECT pc.ID_Producto FROM producto_categoria pc WHERE pc.ID_Categoria = ?)");
             params.add(idCategoria);
+        }
+        if (genero != null && !genero.isEmpty()) {
+            sql.append(" AND p.Genero = ?");
+            params.add(genero);
         }
 
 
@@ -86,6 +91,7 @@ public class ServiceProductos {
                     p.setStock(rs.getInt("Stock"));
                     p.setID_Proveedor(rs.getInt("ID_Proveedor"));
                     p.setImagen(rs.getString("Imagen"));
+                    p.setGenero(rs.getString("Genero"));
                     p.setEstado(rs.getString("Estado"));
 
                     return p;
@@ -97,8 +103,8 @@ public class ServiceProductos {
     // Insertar producto (sin imagen binaria, solo nombre)
     public void insertarProducto(Producto producto) {
 
-        String sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Proveedor, Imagen, Estado) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO producto (Nombre, Descripcion, Precio, Stock, ID_Proveedor, Imagen, Estado, Genero) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -111,6 +117,7 @@ public class ServiceProductos {
             ps.setInt(5, producto.getID_Proveedor());
             ps.setString(6, producto.getImagen());
             ps.setString(7, producto.getEstado());
+            ps.setString(8, producto.getGenero());
             return ps;
         }, keyHolder);
 
@@ -121,7 +128,7 @@ public class ServiceProductos {
 
     // Actualizar producto
     public int actualizarProducto(Producto producto, int id) {
-        String sql = "UPDATE producto SET Nombre=?, Descripcion=?, Precio=?, Stock=?, ID_Proveedor=?, Imagen=?, Estado=? " +
+        String sql = "UPDATE producto SET Nombre=?, Descripcion=?, Precio=?, Stock=?, ID_Proveedor=?, Imagen=?, Estado=?, Genero=? " +
                 "WHERE ID_Producto=?";
 
         return jdbcTemplate.update(sql,
@@ -132,6 +139,7 @@ public class ServiceProductos {
                 producto.getID_Proveedor(),
                 producto.getImagen(),
                 producto.getEstado(),
+                producto.getGenero(),
                 id
         );
     }

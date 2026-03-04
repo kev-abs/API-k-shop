@@ -71,7 +71,8 @@ public class ControllerProductos {
             @RequestParam("stock") int stock,
             @RequestParam("idProveedor") int idProveedor,
             @RequestParam("estado") String estado,
-            @RequestParam(value = "imagen", required = false) MultipartFile imagen
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+            @RequestParam(value = "genero", required = false, defaultValue = "unisex") String genero
     ) {
         try {
             String nombreImagen = null;
@@ -88,6 +89,7 @@ public class ControllerProductos {
             nuevo.setID_Proveedor(idProveedor);
             nuevo.setEstado(estado);
             nuevo.setImagen(nombreImagen);
+            nuevo.setGenero(genero);
 
             conexionService.insertarProducto(nuevo);
 
@@ -126,11 +128,12 @@ public class ControllerProductos {
             @RequestParam(required = false) String nombre,
             @RequestParam(required = false) Integer idCategoria,
             @RequestParam(required = false) Double precioMin,
-            @RequestParam(required = false) Double precioMax
+            @RequestParam(required = false) Double precioMax,
+            @RequestParam(required = false) String genero
 
     ) {
 
-        return conexionService.filtrarProductos(nombre, idCategoria, precioMin, precioMax);
+        return conexionService.filtrarProductos(nombre, idCategoria, precioMin, precioMax, genero);
 
     }
 
@@ -146,7 +149,8 @@ public class ControllerProductos {
             @RequestParam("stock") int stock,
             @RequestParam("idProveedor") int idProveedor,
             @RequestParam("estado") String estado,
-            @RequestParam(value = "imagen", required = false) MultipartFile imagen
+            @RequestParam(value = "imagen", required = false) MultipartFile imagen,
+            @RequestParam(value = "genero", required = false, defaultValue = "unisex") String genero
     ) {
         try {
             Producto p = conexionService.obtenerProductoPorId(id);
@@ -159,6 +163,7 @@ public class ControllerProductos {
             p.setStock(stock);
             p.setID_Proveedor(idProveedor);
             p.setEstado(estado);
+            p.setGenero(genero);
 
             if (imagen != null && !imagen.isEmpty()) {
                 eliminarImagenExistente(p.getImagen());

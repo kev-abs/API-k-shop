@@ -25,6 +25,7 @@ public class ProductoCategoriaService {
         List<Map<String, Object>> rows = repository.findProductosPorCategoria();
 
         Map<Integer, Map<String, Object>> categorias = new LinkedHashMap<>();
+        System.out.println(rows.get(0));
 
         for (Map<String, Object> row : rows) {
 
@@ -46,6 +47,7 @@ public class ProductoCategoriaService {
             producto.put("descripcion", row.get("descripcion"));
             producto.put("precio", row.get("precio"));
             producto.put("imagen", row.get("imagen"));
+            producto.put("genero", row.get("genero"));
 
             ((List<Object>) categorias.get(idCategoria).get("productos")).add(producto);
         }
