@@ -137,6 +137,7 @@ public class PedidoService {
         SELECT 
             p.ID_Pedido,
             p.ID_Cliente,
+            c.Nombre AS nombre_cliente,
             p.fecha,
             p.total,
             p.estado AS estado_pedido,
@@ -145,6 +146,7 @@ public class PedidoService {
             e.ID_Envio,
             e.estado AS estado_envio
         FROM pedido p
+        LEFT JOIN cliente c ON p.ID_Cliente = c.ID_Cliente
         LEFT JOIN pago pa ON p.ID_Pedido = pa.ID_Pedido
         LEFT JOIN envio e ON p.ID_Pedido = e.ID_Pedido
         ORDER BY p.ID_Pedido ASC
@@ -155,9 +157,9 @@ public class PedidoService {
 
             pedido.setIdPedido(rs.getInt("ID_Pedido"));
             pedido.setIdCliente(rs.getInt("ID_Cliente"));
+            pedido.setNombreCliente(rs.getString("nombre_cliente"));
             pedido.setFecha(rs.getTimestamp("fecha").toLocalDateTime());
             pedido.setTotal(rs.getDouble("total"));
-
             pedido.setEstado(rs.getString("estado_pedido"));
 
             pedido.setIdPago(rs.getInt("ID_Pago"));
