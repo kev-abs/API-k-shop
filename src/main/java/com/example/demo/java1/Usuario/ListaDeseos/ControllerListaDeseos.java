@@ -44,7 +44,7 @@ public class ControllerListaDeseos {
         int filas = conexionService.actualizarListaDeseos(
                 id,
                 listadeseos.getIdCliente(),
-                listadeseos.getFechaCreacion() // 👈 camelCase
+                listadeseos.getFechaCreacion() // camelCase
         );
         return (filas > 0) ? "Lista de deseos actualizada correctamente"
                 : "No se pudo actualizar la lista de deseos";

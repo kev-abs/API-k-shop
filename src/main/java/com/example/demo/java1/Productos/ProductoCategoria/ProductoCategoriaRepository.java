@@ -31,19 +31,20 @@ public class ProductoCategoriaRepository {
     public List<Map<String, Object>> findProductosPorCategoria() {
 
         String sql = """
-            SELECT
-                c.id_categoria,
-                c.nombre AS categoria,
-                p.id_producto,
-                p.nombre AS producto,
-                p.descripcion,
-                p.precio,
-                p.imagen
-            FROM categoria c
-            JOIN producto_categoria pc ON c.id_categoria = pc.id_categoria
-            JOIN producto p ON pc.id_producto = p.id_producto
-            ORDER BY c.nombre, p.nombre
-        """;
+    SELECT
+        c.id_categoria,
+        c.nombre AS categoria,
+        p.id_producto,
+        p.nombre AS producto,
+        p.descripcion,
+        p.precio,
+        p.imagen,
+        p.Genero AS genero
+    FROM categoria c
+    JOIN producto_categoria pc ON c.id_categoria = pc.id_categoria
+    JOIN producto p ON pc.id_producto = p.id_producto
+    ORDER BY c.nombre, p.nombre
+""";
 
         return jdbc.queryForList(sql);
     }

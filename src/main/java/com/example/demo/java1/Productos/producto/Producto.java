@@ -11,6 +11,10 @@ public class Producto {
     private Integer ID_Proveedor;
     private String Imagen;
     private String Estado;
+    private String Genero;
+
+    public String getGenero() { return Genero; }
+    public void setGenero(String genero) { this.Genero = genero; }
 
     public Producto() {}
 
