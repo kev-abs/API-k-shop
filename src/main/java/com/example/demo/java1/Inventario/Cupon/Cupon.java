@@ -7,6 +7,7 @@ public class Cupon {
     private String Codigo;
     private int Descuento;
     private LocalDate fecha_Expiracion;
+    private String estado;
 
     public int getID_Cupon(){return ID_Cupon;}
     public void setID_Cupon(int ID_Cupon){this.ID_Cupon=ID_Cupon;}
@@ -22,5 +23,8 @@ public class Cupon {
     public void setFecha_Expiracion(LocalDate fecha_Expiracion) {
         this.fecha_Expiracion = fecha_Expiracion;
     }
+
+    public String getEstado(){return estado;}
+    public void setEstado(String estado){this.estado=estado;}
 
 }

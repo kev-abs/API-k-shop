@@ -70,4 +70,48 @@ public class ConexionControllerCupon {
         }
     }
 
+    @PostMapping("/validar")
+    @Operation(
+            summary = "Validar cupón",
+            description = "Verifica si un cupón es válido para un cliente"
+    )
+    public ResponseEntity<?> validarCupon(@RequestParam String codigo,
+                                          @RequestParam int idCliente){
+
+        Cupon cupon = conexionServiceCupon.validarCupon(codigo,idCliente);
+
+        if(cupon == null){
+            return ResponseEntity.badRequest()
+                    .body(Map.of("message","Cupón inválido o ya usado"));
+        }
+
+        return ResponseEntity.ok(cupon);
+    }
+
+    @PostMapping("/usar")
+    @Operation(
+            summary = "Usar cupón",
+            description = "Marca un cupón como utilizado por el cliente"
+    )
+    public Map<String,String> usarCupon(@RequestParam int idCliente,
+                                        @RequestParam int idCupon){
+
+        conexionServiceCupon.usarCupon(idCliente,idCupon);
+
+        return Map.of("message","Cupón aplicado correctamente");
+    }
+
+    @PostMapping("/asignar")
+    @Operation(
+            summary = "Asignar cupón",
+            description = "Asigna un cupón a un cliente"
+    )
+    public Map<String,String> asignarCupon(@RequestParam int idCliente,
+                                           @RequestParam int idCupon){
+
+        conexionServiceCupon.asignarCupon(idCliente,idCupon);
+
+        return Map.of("message","Cupón asignado correctamente");
+    }
+
 }

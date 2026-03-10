@@ -39,6 +39,7 @@ public class ServiceProductos {
             p.setID_Proveedor(rs.getInt("ID_Proveedor"));
             p.setImagen(rs.getString("Imagen"));
             p.setEstado(rs.getString("Estado"));
+            p.setDescuento(rs.getInt("Descuento"));
             return p;
         });
     }
@@ -87,7 +88,7 @@ public class ServiceProductos {
                     p.setID_Proveedor(rs.getInt("ID_Proveedor"));
                     p.setImagen(rs.getString("Imagen"));
                     p.setEstado(rs.getString("Estado"));
-
+                    p.setDescuento(rs.getInt("Descuento"));
                     return p;
                 }
         );

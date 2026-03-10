@@ -11,6 +11,7 @@ public class Producto {
     private Integer ID_Proveedor;
     private String Imagen;
     private String Estado;
+    private int descuento;
 
     public Producto() {}
 
@@ -39,4 +40,7 @@ public class Producto {
 
     public String getEstado() { return Estado; }
     public void setEstado(String estado) { this.Estado = estado; }
+
+    public int getDescuento() { return descuento; }
+    public void setDescuento(int descuento) { this.descuento = descuento; }
 }
