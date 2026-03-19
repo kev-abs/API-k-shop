@@ -60,13 +60,32 @@ public class EmpleadoDTO {
         IdEmpleado = idEmpleado;
     }
 
+    private String estado; // tinyint(1) → boolean
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void setDocumento(String documento) {
+        this.documento = documento;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
     private BigInteger IdEmpleado;
     private String nombre;
     private String cargo;
     private String correo;
     private String contrasena;
     private String fechaContratacion;
-    private String estado; // tinyint(1) → boolean
-     // yyyy-MM-dd HH:mm:ss
+    // yyyy-MM-dd HH:mm:ss
+    private String documento;
+    private String telefono;
 
     }
