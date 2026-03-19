@@ -27,6 +27,8 @@ public class ServiceEmpleado {
                 empleado.setNombre(rs.getString("Nombre"));
                 empleado.setCargo(rs.getString("Cargo"));
                 empleado.setCorreo(rs.getString("Correo"));
+                empleado.setDocumento(rs.getString("Documento"));
+                empleado.setTelefono(rs.getString("Telefono"));
                 empleado.setContrasena(rs.getString("Contrasena"));
                 empleado.setFechaContratacion(rs.getString("Fecha_Contratacion"));
                 empleado.setEstado(rs.getString("Estado"));
@@ -44,6 +46,8 @@ public class ServiceEmpleado {
                 empleado.setNombre(rs.getString("Nombre"));
                 empleado.setCargo(rs.getString("Cargo"));
                 empleado.setCorreo(rs.getString("Correo"));
+                empleado.setDocumento(rs.getString("Documento"));
+                empleado.setTelefono(rs.getString("Telefono"));
                 empleado.setContrasena(rs.getString("Contrasena"));
                 empleado.setFechaContratacion(rs.getString("Fecha_Contratacion"));
                 empleado.setEstado(rs.getString("Estado"));
@@ -55,19 +59,28 @@ public class ServiceEmpleado {
     }
 
 
-    public int insertarEmpleado(String nombre, String cargo, String correo, String contrasena) {
+    public int insertarEmpleado(String nombre, String cargo, String correo, String documento, String telefono, String contrasena) {
         String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
         String sql = "INSERT INTO empleado (Nombre, Cargo, Correo, Contrasena) " +
                 "VALUES (?, ?, ?, ?)";
         return jdbcTemplate.update(sql, nombre, cargo, correo, contrasenaEncriptada);
     }
-    public int actualizarEmpleado(int id, String nombre, String cargo, String correo, String contrasena, String fechaContratacion,
+    public int actualizarEmpleado(int id, String nombre, String cargo, String correo, String documento, String telefono, String contrasena, String fechaContratacion,
                                   String estado) {
-        String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
+        String sql;
 
         int estadoNum = "activo".equalsIgnoreCase(estado) ? 1 : 0;
-        String sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Contrasena=?, Estado=? WHERE ID_Empleado=?";
-        return jdbcTemplate.update(sql, nombre, cargo, correo, contrasenaEncriptada, estadoNum, id);
+
+        if (contrasena != null && !contrasena.isEmpty()) {
+            String contrasenaEncriptada = PasswordUtils.encriptar(contrasena);
+
+            sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Documento=?, Telefono=?, Contrasena=?, Estado=? WHERE ID_Empleado=?";
+            return jdbcTemplate.update(sql, nombre, cargo, correo, documento, telefono, contrasenaEncriptada, estadoNum, id);
+
+        } else {
+            sql = "UPDATE empleado SET Nombre=?, Cargo=?, Correo=?, Documento=?, Telefono=?, Estado=? WHERE ID_Empleado=?";
+            return jdbcTemplate.update(sql, nombre, cargo, correo, documento, telefono, estadoNum, id);
+        }
     }
     public int eliminarEmpleado(int id) {
         String sql = "DELETE FROM empleado WHERE ID_Empleado = ?";

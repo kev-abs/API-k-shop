@@ -56,7 +56,9 @@ public class ControllerEmpleado {
                 empleado.getNombre(),
                 empleado.getCargo(),
                 empleado.getCorreo(),
-                empleado.getContrasena()
+                empleado.getContrasena(),
+                empleado.getDocumento(),
+                empleado.getTelefono()
         );
 
         respuesta.put("mensaje", (filas > 0) ? "Empleado agregado correctamente" : "Error al agregar empleado");
@@ -69,7 +71,16 @@ public class ControllerEmpleado {
     @Operation(summary = " Actualizar empleados",
             description = "Nos permite actualizar datos de los empleados ya registrados")
     public Map<String, String> actualizarEmpleado(@PathVariable int id, @RequestBody EmpleadoDTO empleado) {
-        int filas = conexionService.actualizarEmpleado(id, empleado.getNombre(), empleado.getCargo(), empleado.getCorreo(), empleado.getContrasena(), empleado.getFechaContratacion(), empleado.getEstado());
+        int filas = conexionService.actualizarEmpleado(id,
+                empleado.getNombre(),
+                empleado.getCargo(),
+                empleado.getCorreo(),
+                empleado.getDocumento(),
+                empleado.getTelefono(),
+                empleado.getContrasena(),
+                empleado.getFechaContratacion(),
+                empleado.getEstado()
+        );
         Map<String, String> respuesta = new HashMap<>();
         respuesta.put("mensaje", (filas > 0) ? "Empleado actualizado correctamente" : "Empleado no encontrado o sin cambios");
         return respuesta;
