@@ -66,7 +66,9 @@ public class CarritoController {
                     request.getIdCliente(),
                     request.getDireccion(),
                     request.getCiudad(),
-                    request.getMetodoPago()
+                    request.getMetodoPago(),
+                    request.getDescuento(),
+                    request.getPorcentajeDescuento()
             );
 
             return ResponseEntity.ok().build();

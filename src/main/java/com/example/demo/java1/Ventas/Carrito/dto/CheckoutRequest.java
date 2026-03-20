@@ -7,6 +7,9 @@ public class CheckoutRequest {
     private String direccion;
     private String ciudad;
     private String metodoPago;
+    private double descuento = 0;
+    private int porcentajeDescuento = 0;
+
 
     public int getIdCliente() {
         return idCliente;
@@ -38,5 +41,13 @@ public class CheckoutRequest {
 
     public void setMetodoPago(String metodoPago) {
         this.metodoPago = metodoPago;
+    }
+
+    public double getDescuento() { return descuento; }
+    public void setDescuento(double descuento) { this.descuento = descuento; }
+
+    public int getPorcentajeDescuento() { return porcentajeDescuento; }
+    public void setPorcentajeDescuento(int porcentajeDescuento) {
+        this.porcentajeDescuento = porcentajeDescuento;
     }
 }

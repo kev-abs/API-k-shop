@@ -234,91 +234,89 @@ public class CarritoService {
 
         return new CarritoResponse(items, subtotal);
     }
-@Transactional
-    public void checkout(int idCliente, String direccion, String ciudad, String metodoPago) {
+
+    @Transactional
+    public void checkout(int idCliente, String direccion, String ciudad, String metodoPago,
+                         double descuento, int porcentajeDescuento) {
+
+        System.out.println("=== CHECKOUT INICIADO ===");
+        System.out.println("idCliente: " + idCliente);
+        System.out.println("descuento: " + descuento);
+        System.out.println("porcentajeDescuento: " + porcentajeDescuento);
 
         Integer idCarrito = obtenerCarritoActivo(idCliente);
+        System.out.println("idCarrito: " + idCarrito);
 
         if (idCarrito == null) {
             throw new RuntimeException("No hay carrito activo");
         }
 
-        double total = calcularSubtotal(idCarrito);
-// Obtener productos del carrito
-    List<DetalleCarrito> items = obtenerCarrito(idCliente);
+        double subtotal = calcularSubtotal(idCarrito);
+        double total    = subtotal - descuento;
+        System.out.println("subtotal: " + subtotal + " | total: " + total);
 
-    for (DetalleCarrito item : items) {
+        List<DetalleCarrito> items = obtenerCarrito(idCliente);
+        System.out.println("items en carrito: " + items.size());
 
-        Integer stockActual = jdbcTemplate.queryForObject(
-                "SELECT stock FROM producto WHERE ID_Producto = ? FOR UPDATE",
-                Integer.class,
-                item.getIdProducto()
-        );
+        for (DetalleCarrito item : items) {
+            System.out.println("Procesando producto: " + item.getIdProducto());
 
-        if (stockActual == null || stockActual <= 0) {
-
-            throw new RuntimeException(
-                    "El producto " + item.getIdProducto() + " ya no tiene stock"
+            Integer stockActual = jdbcTemplate.queryForObject(
+                    "SELECT stock FROM producto WHERE ID_Producto = ? FOR UPDATE",
+                    Integer.class, item.getIdProducto()
             );
+            System.out.println("Stock actual: " + stockActual);
+
+            if (stockActual == null || stockActual <= 0) {
+                throw new RuntimeException("El producto " + item.getIdProducto() + " ya no tiene stock");
+            }
+
+            if (item.getCantidad() > stockActual) {
+                throw new StockException("Solo quedan " + stockActual + " unidades disponibles");
+            }
+
+            jdbcTemplate.update(
+                    "UPDATE producto SET stock = stock - ? WHERE ID_Producto = ?",
+                    item.getCantidad(), item.getIdProducto()
+            );
+            System.out.println("Stock descontado OK");
         }
 
-        if (item.getCantidad() > stockActual) {
-
-            throw new StockException(
-                    "Solo quedan " + stockActual + " unidades disponibles"
-            );
-        }
-
-            // DESCONTAR STOCK
+        System.out.println("Insertando pedido...");
         jdbcTemplate.update(
-                "UPDATE producto SET stock = stock - ? WHERE ID_Producto = ?",
-                item.getCantidad(),
-                item.getIdProducto()
+                "INSERT INTO pedido (ID_Cliente, subtotal, descuento, porcentaje_descuento, total, estado) VALUES (?, ?, ?, ?, ?, 'PENDIENTE')",
+                idCliente, subtotal, descuento, porcentajeDescuento, total
         );
-    }
+        System.out.println("Pedido insertado OK");
 
+        Integer idPedido = jdbcTemplate.queryForObject("SELECT LAST_INSERT_ID()", Integer.class);
+        System.out.println("idPedido: " + idPedido);
 
-    // Crear pedido
-        jdbcTemplate.update(
-                "INSERT INTO pedido (ID_Cliente, total, estado) VALUES (?, ?, 'PENDIENTE')",
-                idCliente,
-                total
-        );
-
-        Integer idPedido = jdbcTemplate.queryForObject(
-                "SELECT LAST_INSERT_ID()",
-                Integer.class
-        );
-
-        // Copiar productos
         jdbcTemplate.update("""
         INSERT INTO detalle_pedido (ID_Pedido, ID_Producto, cantidad, precio_unitario, total)
-        SELECT ?, dc.ID_Producto, dc.cantidad, p.precio,
-               (dc.cantidad * p.precio)
+        SELECT ?, dc.ID_Producto, dc.cantidad, p.precio, (dc.cantidad * p.precio)
         FROM detalle_carrito dc
         JOIN producto p ON dc.ID_Producto = p.ID_Producto
         WHERE dc.ID_Carrito = ?
     """, idPedido, idCarrito);
+        System.out.println("Detalle pedido OK");
 
-        // Crear envío con dirección real
         jdbcTemplate.update("""
         INSERT INTO envio (ID_Pedido, direccion, ciudad, estado)
         VALUES (?, ?, ?, 'PENDIENTE')
     """, idPedido, direccion, ciudad);
+        System.out.println("Envio OK");
 
-        // Crear pago con método real
         jdbcTemplate.update("""
         INSERT INTO pago (ID_Pedido, metodo, monto, estado)
         VALUES (?, ?, ?, 'PENDIENTE')
     """, idPedido, metodoPago, total);
+        System.out.println("Pago OK");
 
-        // Cerrar carrito
         jdbcTemplate.update(
-                "UPDATE carrito SET activo = 0 WHERE ID_Carrito = ?",
-                idCarrito
+                "UPDATE carrito SET activo = 0 WHERE ID_Carrito = ?", idCarrito
         );
+        System.out.println("=== CHECKOUT COMPLETADO ===");
     }
-
-
 }
 
