@@ -109,21 +109,23 @@ public class PedidoService {
     public List<DetallePedido> obtenerDetallePedido(int idPedido) {
 
         String sql = """
-        SELECT 
-            dp.ID_Producto,
-            p.nombre,
-            dp.cantidad,
-            dp.precio_unitario,
-            dp.total
-        FROM detalle_pedido dp
-        JOIN producto p ON dp.ID_Producto = p.ID_Producto
-        WHERE dp.ID_Pedido = ?
-    """;
+            SELECT 
+                dp.ID_Producto,
+                p.nombre,
+                p.imagen,
+                dp.cantidad,
+                dp.precio_unitario,
+                dp.total
+            FROM detalle_pedido dp
+            JOIN producto p ON dp.ID_Producto = p.ID_Producto
+            WHERE dp.ID_Pedido = ?
+            """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             DetallePedido d = new DetallePedido();
             d.setIdProducto(rs.getInt("ID_Producto"));
             d.setNombre(rs.getString("nombre"));
+            d.setImagen(rs.getString("imagen"));
             d.setCantidad(rs.getInt("cantidad"));
             d.setPrecioUnitario(rs.getDouble("precio_unitario"));
             d.setTotal(rs.getDouble("total"));
